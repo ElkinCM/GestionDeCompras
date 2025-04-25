@@ -33,7 +33,7 @@ public class PaqueteCompra extends Producto {
 
     @Override
     public int calcularCostoIVA() {
-        return (int) (getPrecioUnitario() * getCantidad() * 1.12);
+        return (int) (getPrecioUnitario() * getCantidad() * 1.15);
     }
     @Override
     public String toString() {
