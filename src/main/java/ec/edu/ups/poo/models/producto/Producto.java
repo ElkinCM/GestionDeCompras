@@ -64,7 +64,7 @@ public abstract class Producto implements Calculable {
         this.proveedores = proveedores;
     }
 
-    // equals y hashCode (por ID para simplificar)
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
