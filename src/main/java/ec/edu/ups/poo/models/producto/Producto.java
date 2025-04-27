@@ -1,27 +1,24 @@
 package ec.edu.ups.poo.models.producto;
 
-import ec.edu.ups.poo.models.Proveedor;
 import ec.edu.ups.poo.models.interfaces.Calculable;
 
-import java.util.List;
 import java.util.Objects;
 
 public abstract class Producto implements Calculable {
     private int id;
     private String nombre;
-    private int precioUnitario;
+    private double precioUnitario;
     private int cantidad;
-    
-//falta tipo
+
     public Producto() {
     }
 
-    public Producto(int id, String nombre, int precioUnitario, int cantidad) {
+    public Producto(int id, String nombre, double precioUnitario, int cantidad) {
         this.id = id;
         this.nombre = nombre;
         this.precioUnitario = precioUnitario;
         this.cantidad = cantidad;
-       }
+    }
 
     public int getId() {
         return id;
@@ -39,11 +36,11 @@ public abstract class Producto implements Calculable {
         this.nombre = nombre;
     }
 
-    public int getPrecioUnitario() {
+    public double getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(int precioUnitario) {
+    public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 
@@ -55,7 +52,6 @@ public abstract class Producto implements Calculable {
         this.cantidad = cantidad;
     }
 
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,14 +64,4 @@ public abstract class Producto implements Calculable {
     public int hashCode() {
         return Objects.hash(id);
     }
-    @Override
-    public String toString() {
-        return "Producto{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", precioUnitario=" + precioUnitario +
-                ", cantidad=" + cantidad +
-                '}';
-    }
-
 }

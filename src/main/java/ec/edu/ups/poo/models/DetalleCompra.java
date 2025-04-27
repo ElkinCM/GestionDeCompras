@@ -3,24 +3,20 @@ package ec.edu.ups.poo.models;
 import ec.edu.ups.poo.models.producto.Producto;
 
 public class DetalleCompra {
-    private int codigo;
-    private int cantidad;
     private Producto producto;
+    private int cantidad;
 
-    public DetalleCompra() {
-    }
-
-    public DetalleCompra(int codigo, int cantidad, Producto producto) {
-        this.codigo = codigo;
-        this.cantidad = cantidad;
+    public DetalleCompra(Producto producto, int cantidad) {
         this.producto = producto;
-    }
-    public int getCodigo() {
-        return codigo;
+        this.cantidad = cantidad;
     }
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {
@@ -31,11 +27,15 @@ public class DetalleCompra {
         this.cantidad = cantidad;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public double calcularSubtotal() {
+        return producto.getPrecioUnitario() * cantidad;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public double calcularIVA() {
+        return calcularSubtotal() * 0.12;
+    }
+
+    public double calcularTotal() {
+        return calcularSubtotal() + calcularIVA();
     }
 }
