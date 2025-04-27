@@ -11,7 +11,7 @@ public class ProductoFisico extends Producto {
     }
 
     public ProductoFisico(int id, String nombre, int precioUnitario, int cantidad, List<Proveedor> proveedores, String descripcion, String presentacion) {
-        super(id, nombre, precioUnitario, cantidad, proveedores);
+        super(id, nombre, precioUnitario, cantidad);
         this.descripcion = descripcion;
         this.presentacion = presentacion;
     }
@@ -43,7 +43,6 @@ public class ProductoFisico extends Producto {
                 ", nombre='" + getNombre() + '\'' +
                 ", precioUnitario=" + getPrecioUnitario() +
                 ", cantidad=" + getCantidad() +
-                ", proveedores=" + getProveedores() +
                 ", descripcion='" + descripcion + '\'' +
                 ", presentacion='" + presentacion + '\'' +
                 '}';

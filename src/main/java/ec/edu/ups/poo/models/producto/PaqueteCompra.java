@@ -10,7 +10,7 @@ public class PaqueteCompra extends Producto {
     }
 
     public PaqueteCompra(int id, String nombre, int precioUnitario, int cantidad, List<Proveedor> proveedores, String peso) {
-        super(id, nombre, precioUnitario, cantidad, proveedores);
+        super(id, nombre, precioUnitario, cantidad);
         this.peso = peso;
     }
 
@@ -42,9 +42,7 @@ public class PaqueteCompra extends Producto {
                 ", nombre='" + getNombre() + '\'' +
                 ", precioUnitario=" + getPrecioUnitario() +
                 ", cantidad=" + getCantidad() +
-                ", proveedores=" + getProveedores() +
                 ", peso='" + peso + '\'' +
-                ", pesoTotal=" + calcularPesoTotal() +
                 '}';
     }
 

@@ -11,18 +11,17 @@ public abstract class Producto implements Calculable {
     private String nombre;
     private int precioUnitario;
     private int cantidad;
-    private List<Proveedor> proveedores;
-
+    
+//falta tipo
     public Producto() {
     }
 
-    public Producto(int id, String nombre, int precioUnitario, int cantidad, List<Proveedor> proveedores) {
+    public Producto(int id, String nombre, int precioUnitario, int cantidad) {
         this.id = id;
         this.nombre = nombre;
         this.precioUnitario = precioUnitario;
         this.cantidad = cantidad;
-        this.proveedores = proveedores;
-    }
+       }
 
     public int getId() {
         return id;
@@ -56,15 +55,7 @@ public abstract class Producto implements Calculable {
         this.cantidad = cantidad;
     }
 
-    public List<Proveedor> getProveedores() {
-        return proveedores;
-    }
-
-    public void setProveedores(List<Proveedor> proveedores) {
-        this.proveedores = proveedores;
-    }
-
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,7 +75,6 @@ public abstract class Producto implements Calculable {
                 ", nombre='" + nombre + '\'' +
                 ", precioUnitario=" + precioUnitario +
                 ", cantidad=" + cantidad +
-                ", proveedores=" + proveedores +
                 '}';
     }
 

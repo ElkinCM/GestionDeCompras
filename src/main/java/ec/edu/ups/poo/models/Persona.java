@@ -28,6 +28,10 @@ public class Persona {
         this.nombre = nombre;
     }
 
+    public String obtenerNombre(){
+        return this.nombre;
+    }
+
     @Override
     public String toString() {
         return "Persona{" +

@@ -2,39 +2,41 @@ package ec.edu.ups.poo.models;
 
 import ec.edu.ups.poo.models.enums.EstadoSolicitud;
 import ec.edu.ups.poo.models.interfaces.Calculable;
+
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import java.util.List;
 
 public class SolicitudCompra {
-    private int id;
+    private int idCompra;
     private String departamento;
     private EstadoSolicitud estado;
     private List<Calculable> items;
     private GregorianCalendar fecha;
     private String nombreEmpresa;
-    private DetalleCompra detalleCompra;
+    private ArrayList<DetalleCompra> detalleCompras;
 
     public SolicitudCompra() {
         this.estado = EstadoSolicitud.SOLICITADA;
+        detalleCompras = new ArrayList<>();
     }
 
-    public SolicitudCompra(int id, String departamento, EstadoSolicitud estado, List<Calculable> items, GregorianCalendar fecha, String nombreEmpresa, DetalleCompra detalleCompra) {
-        this.id = id;
+    public SolicitudCompra(int idCompra, String departamento, EstadoSolicitud estado, List<Calculable> items, GregorianCalendar fecha, String nombreEmpresa, DetalleCompra detalleCompra) {
+        this.idCompra = idCompra;
         this.departamento = departamento;
         this.estado = estado;
         this.items = items;
         this.fecha = fecha;
         this.nombreEmpresa = nombreEmpresa;
-        this.detalleCompra = detalleCompra;
     }
 
     public int getId() {
-        return id;
+        return idCompra;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int idCompra) {
+        this.idCompra = idCompra;
     }
 
     public String getDepartamento() {
@@ -76,16 +78,6 @@ public class SolicitudCompra {
     public void setNombreEmpresa(String nombreEmpresa) {
         this.nombreEmpresa = nombreEmpresa;
     }
-
-    public DetalleCompra getDetalleCompra() {
-        return detalleCompra;
-    }
-
-    public void setDetalleCompra(DetalleCompra detalleCompra) {
-        this.detalleCompra = detalleCompra;
-    }
-
-
     // Método que suma el costo con IVA de todos los productos
     public double calcularTotal() {
         double total = 0;
@@ -117,7 +109,7 @@ public class SolicitudCompra {
     @Override
     public String toString() {
         return "SolicitudCompra{" +
-                "id=" + id +
+                "id=" + idCompra +
                 ", departamento='" + departamento + '\'' +
                 ", estado=" + estado +
                 ", totalConIVA=" + calcularTotal() +
