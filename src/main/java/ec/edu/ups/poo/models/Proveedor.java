@@ -107,6 +107,23 @@ public class Proveedor extends Persona {
         return -1; // No se encontró la cédula
     }
 
+    // Método para agregar un producto a la lista de productos del proveedor
+    public void agregarProducto(Producto producto) {
+        if (producto != null) {
+            productos.add(producto);
+        } else {
+            System.out.println("El producto no puede ser nulo.");
+        }
+    }
+    // Método para eliminar un producto de la lista de productos del proveedor
+    public void eliminarProducto(Producto producto) {
+        if (productos.contains(producto)) {
+            productos.remove(producto);
+        } else {
+            System.out.println("El producto no se encuentra en la lista de productos del proveedor.");
+        }
+    }
+
     @Override
     public String toString() {
         return "PRoveedor{" +

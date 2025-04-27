@@ -1,94 +1,80 @@
 package ec.edu.ups.poo.controller;
-import ec.edu.ups.poo.models.producto.Producto;
+
 import ec.edu.ups.poo.models.producto.ProductoFisico;
-import ec.edu.ups.poo.models.*;
+import ec.edu.ups.poo.models.producto.Producto;
+import ec.edu.ups.poo.models.Proveedor;
+import ec.edu.ups.poo.models.DetalleCompra;
+import ec.edu.ups.poo.models.SolicitudCompra;
+import ec.edu.ups.poo.models.enums.DepartamentoEnum;
+import ec.edu.ups.poo.models.enums.EstadoSolicitud;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
         int option = 0;
-        Scanner leer = new Scanner(System.in);
-        Proveedor proveedor = new Proveedor();
-        ArrayList<Proveedor> proveedores = new ArrayList<>();
+        try (Scanner leer = new Scanner(System.in)) {
+            ArrayList<Proveedor> proveedores = new ArrayList<>();
+        ArrayList<SolicitudCompra> solicitudes = new ArrayList<>();
+        int solicitudIdCounter = 1; // Contador para generar IDs automáticos de solicitudes
 
         do {
-            
-            System.out.println("Menu del programa");
-            System.out.println("1. Registrar Proveedores");
-            System.out.println("2. Agregar Proveedor");
-            System.out.println("3. Buscar Proveedor");
+            System.out.println("\n========= MENÚ DEL PROGRAMA =========");
+            System.out.println("1. Registrar Proveedor");
+            System.out.println("2. Mostrar Proveedores");
+            System.out.println("3. Buscar Proveedor y Agregar Producto");
             System.out.println("4. Registrar Solicitud de Compra");
             System.out.println("5. Buscar Solicitud de Compra");
             System.out.println("6. Salir");
             System.out.print("Seleccione una opción: ");
+            
+            while (!leer.hasNextInt()) {
+                System.out.println("Error: debe ingresar un número.");
+                leer.next();
+            }
             option = leer.nextInt();
+            leer.nextLine(); // Limpiar buffer
+
             switch (option) {
                 case 1:
-                    System.out.println("**Registrar Proveedores**");
+                    System.out.println("\n** REGISTRAR PROVEEDOR **");
+                    System.out.print("Ingrese la cédula del proveedor: ");
+                    String cedula = leer.nextLine();
+                    System.out.print("Ingrese el nombre del proveedor: ");
+                    String nombre = leer.nextLine();
+                    System.out.print("Ingrese el RUC del proveedor: ");
+                    String ruc = leer.nextLine();
+                    System.out.print("Ingrese el nombre de la empresa: ");
+                    String empresa = leer.nextLine();
 
-                    System.out.print("Ingrese cuantos proveedores desea registrar: ");
-                    int cantidad = leer.nextInt();
-                    for (int i = 0; i < cantidad; i++) {
-                        System.out.print("Ingrese la cédula del proveedor: ");
-                        String cedula = leer.next();
-                        System.out.print("Ingrese el nombre del proveedor: ");
-                        String nombre = leer.next();
-                        System.out.print("Ingrese el RUC del proveedor: ");
-                        String ruc = leer.next();
-                        System.out.print("Ingrese el nombre de la empresa: ");
-                        String empresa = leer.next();
-                        
-                        Proveedor nuevoProveedor = new Proveedor(cedula, nombre, ruc, empresa);
+                    Proveedor nuevoProveedor = new Proveedor(cedula, nombre, ruc, empresa);
+                    proveedores.add(nuevoProveedor);
 
-                        System.out.println("Cuantos productos desea registrar para este proveedor? ");
-                        int cantidadProductos = leer.nextInt();
-                        for  (int j=0; j<cantidadProductos; j++){
-                            System.out.print("Ingrese el id del producto: ");
-                            int id = leer.nextInt();
-                            System.out.print("Ingrese el nombre del producto: ");
-                            String nombreProducto = leer.next();
-                            System.out.print("Ingrese el precio unitario del producto: ");
-                            int precioUnitario = leer.nextInt();
-                            System.out.print("Ingrese la cantidad del producto: ");
-                            int cantidadProducto = leer.nextInt();
-                            System.out.print("Ingrese la descripcion del producto: ");
-                            String descripcion = leer.next();
-                            System.out.print("Ingrese la presentacion del producto: ");
-                            String presentacion = leer.next();
-                            ProductoFisico  nuevoProducto = new ProductoFisico(id, nombreProducto, precioUnitario, cantidadProducto, descripcion, presentacion); 
-                            nuevoProveedor.getProductos().add(nuevoProducto);
-                        }
-
-
-                        proveedores.add(nuevoProveedor);
-                    }
-                    System.out.println("Proveedores registrados exitosamente.");
-                    
+                    System.out.println("Proveedor registrado exitosamente.");
                     break;
+
                 case 2:
-                    System.out.println("**Mostrar Proveedores**");
+                    System.out.println("\n** MOSTRAR PROVEEDORES **");
                     if (proveedores.isEmpty()) {
                         System.out.println("No hay proveedores registrados.");
                     } else {
-                        // Recorremos la lista de proveedores con un ciclo for tradicional
                         for (int i = 0; i < proveedores.size(); i++) {
-                            Proveedor proveedorShow = proveedores.get(i);  // Accedemos al proveedor usando su índice
-                            System.out.println("Proveedor #" + (i + 1));
-                            System.out.println("Nombre: " + proveedorShow.getNombre());  // Imprimimos el nombre del proveedor
-                            System.out.println("Cédula: " + proveedorShow.getCedula());  // Imprimimos la cédula del proveedor
-                            System.out.println("Empresa: " + proveedorShow.getEmpresa());  // Imprimimos la empresa del proveedor
-                            System.out.println("RUC: " + proveedorShow.getRuc());  // Imprimimos el RUC del proveedor
-                
-                            // Verificamos si el proveedor tiene productos
-                            if (proveedor.getProductos().isEmpty()) {
+                            Proveedor proveedorShow = proveedores.get(i);
+                            System.out.println("\nProveedor #" + (i + 1));
+                            System.out.println("Nombre: " + proveedorShow.getNombre());
+                            System.out.println("Cédula: " + proveedorShow.getCedula());
+                            System.out.println("Empresa: " + proveedorShow.getEmpresa());
+                            System.out.println("RUC: " + proveedorShow.getRuc());
+
+                            if (proveedorShow.getProductos().isEmpty()) {
                                 System.out.println("  No tiene productos registrados.");
                             } else {
                                 System.out.println("  Productos registrados:");
-                                // Recorremos los productos del proveedor
-                                for (int j = 0; j < proveedor.getProductos().size(); j++) {
-                                    ProductoFisico producto = (ProductoFisico) proveedorShow.getProductos().get(j);  // Hacemos un cast porque sabemos que es ProductoFisico
+                                for (int j = 0; j < proveedorShow.getProductos().size(); j++) {
+                                    ProductoFisico producto = (ProductoFisico) proveedorShow.getProductos().get(j);
                                     System.out.println("    Producto ID: " + producto.getId());
                                     System.out.println("    Nombre: " + producto.getNombre());
                                     System.out.println("    Precio Unitario: " + producto.getPrecioUnitario());
@@ -102,42 +88,210 @@ public class App {
                         }
                     }
                     break;
-                case 3:
-                    System.out.println("**Buscar Proveedor**");
-                    System.out.print("1. Buscar por nombre\n2. Buscar por cedula\nSeleccione una opción: ");
-                    int searchOption = leer.nextInt();
-                    if (searchOption == 1) {
-                        System.out.print("Ingrese el nombre del proveedor: ");
-                        String nombre = leer.next();
-                        proveedor.sortByNameInsertion(null);
-                        proveedor.searchByName(null, nombre);
 
-                    } else if (searchOption == 2) {
-                        System.out.print("Ingrese la cédula del proveedor: ");
-                        String cedula = leer.next();
-                        proveedor.sortByCedulaInsertion(null); 
-                        proveedor.searchByCedula(null, cedula);
-                   
+                    case 3:
+                    System.out.println("\n** BUSCAR PROVEEDOR Y AGREGAR PRODUCTO **");
+                    System.out.println("Seleccione el criterio de búsqueda:");
+                    System.out.println("1. Buscar por nombre");
+                    System.out.println("2. Buscar por cédula");
+                    System.out.print("Seleccione una opción: ");
+                    int busquedaCriterio = leer.nextInt();
+                    leer.nextLine(); // Limpiar buffer
+                
+                    if (busquedaCriterio == 1) {
+                        // Ordenar proveedores por nombre antes de hacer búsqueda binaria
+                        Collections.sort(proveedores, Comparator.comparing(Proveedor::getNombre));
+                
+                        System.out.print("Ingrese el nombre del proveedor a buscar: ");
+                        String nombreBusqueda = leer.nextLine();
+                
+                        // Buscar proveedor por nombre usando búsqueda binaria
+                        int indexNombre = Collections.binarySearch(proveedores, new Proveedor(null, nombreBusqueda, null, null), Comparator.comparing(Proveedor::getNombre));
+                
+                        if (indexNombre >= 0) {
+                            Proveedor proveedorEncontrado = proveedores.get(indexNombre);
+                            System.out.println("Proveedor encontrado: " + proveedorEncontrado.getNombre());
+                
+                            // Ahora le permitimos agregar productos al proveedor
+                            System.out.print("¿Desea agregar productos a este proveedor? (s/n): ");
+                            String respuesta = leer.nextLine();
+                
+                            if (respuesta.equalsIgnoreCase("s")) {
+                                System.out.print("Ingrese el ID del producto (número): ");
+                                int id = leer.nextInt();
+                                leer.nextLine(); // Limpiar buffer
+                                System.out.print("Ingrese el nombre del producto: ");
+                                String nombreProducto = leer.nextLine();
+                                System.out.print("Ingrese el precio unitario del producto: ");
+                                double precioUnitario = leer.nextDouble();
+                                System.out.print("Ingrese la cantidad del producto: ");
+                                int cantidadProducto = leer.nextInt();
+                                leer.nextLine(); // Limpiar buffer
+                                System.out.print("Ingrese la descripción del producto: ");
+                                String descripcion = leer.nextLine();
+                                System.out.print("Ingrese la presentación del producto: ");
+                                String presentacion = leer.nextLine();
+                
+                                ProductoFisico nuevoProducto = new ProductoFisico(id, nombreProducto, precioUnitario, cantidadProducto, descripcion, presentacion);
+                                proveedorEncontrado.getProductos().add(nuevoProducto);
+                
+                                System.out.println("Producto agregado exitosamente al proveedor.");
+                                System.out.println("----------------------------------");
+                                // Imprimir cálculos de costo con IVA
+                                nuevoProducto.calcularCostoIVA();
+                            }
+                        } else {
+                            System.out.println("Proveedor no encontrado.");
+                        }
+                
+                    } else if (busquedaCriterio == 2) {
+                        // Ordenar proveedores por cédula antes de hacer búsqueda binaria
+                        Collections.sort(proveedores, Comparator.comparing(Proveedor::getCedula));
+                
+                        System.out.print("Ingrese la cédula del proveedor a buscar: ");
+                        String cedulaBusqueda = leer.nextLine();
+                
+                        // Buscar proveedor por cédula usando búsqueda binaria
+                        int indexCedula = Collections.binarySearch(proveedores, new Proveedor(cedulaBusqueda, null, null, null), Comparator.comparing(Proveedor::getCedula));
+                
+                        if (indexCedula >= 0) {
+                            Proveedor proveedorEncontrado = proveedores.get(indexCedula);
+                            System.out.println("Proveedor encontrado: " + proveedorEncontrado.getNombre());
+                
+                            // Ahora le permitimos agregar productos al proveedor
+                            System.out.print("¿Desea agregar productos a este proveedor? (s/n): ");
+                            String respuesta = leer.nextLine();
+                
+                            if (respuesta.equalsIgnoreCase("s")) {
+                                System.out.print("Ingrese el ID del producto (número): ");
+                                int id = leer.nextInt();
+                                leer.nextLine(); // Limpiar buffer
+                                System.out.print("Ingrese el nombre del producto: ");
+                                String nombreProducto = leer.nextLine();
+                                System.out.print("Ingrese el precio unitario del producto: ");
+                                double precioUnitario = leer.nextDouble();
+                                System.out.print("Ingrese la cantidad del producto: ");
+                                int cantidadProducto = leer.nextInt();
+                                leer.nextLine(); // Limpiar buffer
+                                System.out.print("Ingrese la descripción del producto: ");
+                                String descripcion = leer.nextLine();
+                                System.out.print("Ingrese la presentación del producto: ");
+                                String presentacion = leer.nextLine();
+                
+                                ProductoFisico nuevoProducto = new ProductoFisico(id, nombreProducto, precioUnitario, cantidadProducto, descripcion, presentacion);
+                                proveedorEncontrado.getProductos().add(nuevoProducto);
+                
+                                System.out.println("Producto agregado exitosamente al proveedor.");
+                
+                                // Imprimir cálculos de costo con IVA
+                                nuevoProducto.calcularCostoIVA();
+                            }
+                        } else {
+                            System.out.println("Proveedor no encontrado.");
+                        }
                     } else {
-                        System.out.println("Opción no válida. Intente nuevamente.");
+                        System.out.println("Opción no válida.");
                     }
-                    
                     break;
+                
                 case 4:
-                    System.out.println("**Registrar Solicitud de Compra**");
-                    
+                    System.out.println("\n** REGISTRAR SOLICITUD DE COMPRA **");
+                    if (proveedores.isEmpty()) {
+                        System.out.println("No hay proveedores registrados.");
+                        break;
+                    }
+
+                    System.out.print("Ingrese el nombre del solicitante: ");
+                    String solicitante = leer.nextLine();
+
+                    System.out.println("Seleccione el departamento:");
+                    for (DepartamentoEnum dep : DepartamentoEnum.values()) {
+                        System.out.println(dep.ordinal() + 1 + ". " + dep.name());
+                    }
+                    int departamentoOpc = leer.nextInt();
+                    DepartamentoEnum departamento = DepartamentoEnum.values()[departamentoOpc - 1];
+
+                    SolicitudCompra nuevaSolicitud = new SolicitudCompra(solicitante, departamento);
+                    nuevaSolicitud.setId(solicitudIdCounter); // Asignamos el ID automáticamente
+                    solicitudIdCounter++; // Aumentamos el contador para la siguiente solicitud
+
+                    System.out.println("Solicitud registrada exitosamente con ID: " + nuevaSolicitud.getId());
+
+                    System.out.println("Seleccione el proveedor para comprar:");
+                    for (int i = 0; i < proveedores.size(); i++) {
+                        System.out.println((i + 1) + ". " + proveedores.get(i).getNombre() + " (" + proveedores.get(i).getEmpresa() + ")");
+                    }
+                    int proveedorSeleccionado = leer.nextInt();
+                    leer.nextLine();
+                    Proveedor proveedor = proveedores.get(proveedorSeleccionado - 1);
+
+                    System.out.println("Productos disponibles:");
+                    for (int i = 0; i < proveedor.getProductos().size(); i++) {
+                        System.out.println((i + 1) + ". " + proveedor.getProductos().get(i).getNombre());
+                    }
+
+                    boolean seguirComprando = true;
+                    while (seguirComprando) {
+                        System.out.print("Seleccione el producto: ");
+                        int productoSeleccionado = leer.nextInt();
+                        Producto producto = proveedor.getProductos().get(productoSeleccionado - 1);
+
+                        System.out.print("Cantidad a comprar: ");
+                        int cantidadCompra = leer.nextInt();
+                        leer.nextLine();
+
+                        DetalleCompra detalle = new DetalleCompra(producto, cantidadCompra);
+                        nuevaSolicitud.getDetalles().add(detalle);
+
+                        System.out.print("¿Desea agregar otro producto? (s/n): ");
+                        String respuestaCompra = leer.nextLine();
+                        if (respuestaCompra.equalsIgnoreCase("n")) {
+                            seguirComprando = false;
+                        }
+                    }
+
+                    solicitudes.add(nuevaSolicitud);
                     break;
+
                 case 5:
-                    System.out.println("**Buscar Solicitud de Compra**");
-                    
+                    System.out.println("\n** BUSCAR SOLICITUD DE COMPRA **");
+                    if (solicitudes.isEmpty()) {
+                        System.out.println("No hay solicitudes registradas.");
+                        break;
+                    }
+
+                    System.out.print("Ingrese el ID de la solicitud: ");
+                    while (!leer.hasNextInt()) {
+                        System.out.println("Error: debe ingresar un número.");
+                        leer.next(); // Limpiar buffer si no es un número
+                    }
+                    int idBusqueda = leer.nextInt();
+
+                    SolicitudCompra solicitudEncontrada = null;
+                    for (SolicitudCompra solicitud : solicitudes) {
+                        if (solicitud.getId() == idBusqueda) {
+                            solicitudEncontrada = solicitud;
+                            break;
+                        }
+                    }
+
+                    if (solicitudEncontrada != null) {
+                        System.out.println("\nSolicitud #" + solicitudEncontrada.getId());
+                        System.out.println("Solicitante: " + solicitudEncontrada.getSolicitante());
+                        System.out.println("Estado: " + solicitudEncontrada.getEstadoSolicitud());
+                    } else {
+                        System.out.println("Solicitud no encontrada.");
+                    }
                     break;
+
                 case 6:
-                    System.out.println("Saliendo del programa...");
+                    System.out.println("¡Gracias por usar el programa!");
                     break;
+
                 default:
-                    System.out.println("Opción no válida. Intente nuevamente.");
-                }
-            
-            } while (option != 6);
-    }   
+                    System.out.println("Opción no válida.");
+            }
+        } while (option != 6);
+        }
+    }
 }
