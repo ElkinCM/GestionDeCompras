@@ -1,5 +1,6 @@
 package ec.edu.ups.poo.controller;
 import ec.edu.ups.poo.models.producto.Producto;
+import ec.edu.ups.poo.models.producto.ProductoFisico;
 import ec.edu.ups.poo.models.*;
 
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ public class App {
 
                         System.out.println("Cuantos productos desea registrar para este proveedor? ");
                         int cantidadProductos = leer.nextInt();
-                        for (int j = 0; j < cantidadProductos; j++) {
-                            System.out.print("Ingrese el ID del producto: ");
+                        for  (int j=0; j<cantidadProductos; j++){
+                            System.out.print("Ingrese el id del producto: ");
                             int id = leer.nextInt();
                             System.out.print("Ingrese el nombre del producto: ");
                             String nombreProducto = leer.next();
@@ -52,9 +53,12 @@ public class App {
                             int precioUnitario = leer.nextInt();
                             System.out.print("Ingrese la cantidad del producto: ");
                             int cantidadProducto = leer.nextInt();
-                            //Producto producto = new Producto(id, nombreProducto, precioUnitario, cantidad);
-                            
-                
+                            System.out.print("Ingrese la descripcion del producto: ");
+                            String descripcion = leer.next();
+                            System.out.print("Ingrese la presentacion del producto: ");
+                            String presentacion = leer.next();
+                            ProductoFisico  nuevoProducto = new ProductoFisico(id, nombreProducto, precioUnitario, cantidadProducto, descripcion, presentacion); 
+                            nuevoProveedor.getProductos().add(nuevoProducto);
                         }
 
 
@@ -65,7 +69,38 @@ public class App {
                     break;
                 case 2:
                     System.out.println("**Mostrar Proveedores**");
-                    
+                    if (proveedores.isEmpty()) {
+                        System.out.println("No hay proveedores registrados.");
+                    } else {
+                        // Recorremos la lista de proveedores con un ciclo for tradicional
+                        for (int i = 0; i < proveedores.size(); i++) {
+                            Proveedor proveedorShow = proveedores.get(i);  // Accedemos al proveedor usando su índice
+                            System.out.println("Proveedor #" + (i + 1));
+                            System.out.println("Nombre: " + proveedorShow.getNombre());  // Imprimimos el nombre del proveedor
+                            System.out.println("Cédula: " + proveedorShow.getCedula());  // Imprimimos la cédula del proveedor
+                            System.out.println("Empresa: " + proveedorShow.getEmpresa());  // Imprimimos la empresa del proveedor
+                            System.out.println("RUC: " + proveedorShow.getRuc());  // Imprimimos el RUC del proveedor
+                
+                            // Verificamos si el proveedor tiene productos
+                            if (proveedor.getProductos().isEmpty()) {
+                                System.out.println("  No tiene productos registrados.");
+                            } else {
+                                System.out.println("  Productos registrados:");
+                                // Recorremos los productos del proveedor
+                                for (int j = 0; j < proveedor.getProductos().size(); j++) {
+                                    ProductoFisico producto = (ProductoFisico) proveedorShow.getProductos().get(j);  // Hacemos un cast porque sabemos que es ProductoFisico
+                                    System.out.println("    Producto ID: " + producto.getId());
+                                    System.out.println("    Nombre: " + producto.getNombre());
+                                    System.out.println("    Precio Unitario: " + producto.getPrecioUnitario());
+                                    System.out.println("    Cantidad: " + producto.getCantidad());
+                                    System.out.println("    Descripción: " + producto.getDescripcion());
+                                    System.out.println("    Presentación: " + producto.getPresentacion());
+                                    System.out.println("    --------------------------");
+                                }
+                            }
+                            System.out.println("-------------------------------------------------");
+                        }
+                    }
                     break;
                 case 3:
                     System.out.println("**Buscar Proveedor**");
