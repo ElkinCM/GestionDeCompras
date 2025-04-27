@@ -1,13 +1,14 @@
 package ec.edu.ups.poo.models;
 
-public class Empleado {
+public class Empleado extends Persona {
 
     private Departamento departamento;
 
     public Empleado() {
     }
 
-    public Empleado(Departamento departamento) {
+    public Empleado(String cedula, String nombre, Departamento departamento) {
+        super(cedula, nombre);
         this.departamento = departamento;
     }
 
@@ -22,7 +23,9 @@ public class Empleado {
     @Override
     public String toString() {
         return "Empleado{" +
-                "departamento=" + departamento +
+                "cedula='" + getCedula() + '\'' +
+                ", nombre='" + getNombre() + '\'' +
+                ", departamento=" + departamento +
                 '}';
     }
 }

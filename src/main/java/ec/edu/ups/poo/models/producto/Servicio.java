@@ -11,7 +11,7 @@ public class Servicio extends Producto {
     }
 
     public Servicio(int id, String nombre, int precioUnitario, int cantidad, List<Proveedor> proveedores, String tipo, String categoria) {
-        super(id, nombre, precioUnitario, cantidad, proveedores);
+        super(id, nombre, precioUnitario, cantidad);
         this.tipo = tipo;
         this.categoria = categoria;
     }
@@ -43,7 +43,6 @@ public class Servicio extends Producto {
                 ", nombre='" + getNombre() + '\'' +
                 ", precioUnitario=" + getPrecioUnitario() +
                 ", cantidad=" + getCantidad() +
-                ", proveedores=" + getProveedores() +
                 ", tipo='" + tipo + '\'' +
                 ", categoria='" + categoria + '\'' +
                 '}';
