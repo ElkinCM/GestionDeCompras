@@ -38,14 +38,15 @@ public class Servicio extends Producto {
     }
     @Override
     public String toString() {
-        return "Servicio{" +
-                "id=" + getId() +
-                ", nombre='" + getNombre() + '\'' +
-                ", precioUnitario=" + getPrecioUnitario() +
-                ", cantidad=" + getCantidad() +
-                ", tipo='" + tipo + '\'' +
-                ", categoria='" + categoria + '\'' +
-                '}';
+        return "\n========= SERVICIO =========\n" +
+                "ID            : " + getId() + "\n" +
+                "Nombre        : " + getNombre() + "\n" +
+                "Precio Unit.  : $" + String.format("%.2f", getPrecioUnitario()) + "\n" +
+                "Cantidad      : " + getCantidad() + "\n" +
+                "Tipo          : " + tipo + "\n" +
+                "Categoría     : " + categoria + "\n" +
+                "=============================\n";
     }
+    
 
 }

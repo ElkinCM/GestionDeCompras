@@ -10,7 +10,7 @@ public class Proveedor extends Persona {
     private List<Producto> productos;
     public Proveedor() {
     }
-    //Faltan productos
+
     public Proveedor(String cedula, String nombre, String ruc, String empresa) {
         super(cedula, nombre);
         this.ruc = ruc;
@@ -44,12 +44,6 @@ public class Proveedor extends Persona {
         this.productos = productos;
     }
 
-
-
-
-
-
-    // Metodos de ordenamiento por nombre y cedula
     public void sortByNameInsertion(Proveedor[] proveedores) {
         for (int i = 1; i < proveedores.length; i++) {
             Proveedor key = proveedores[i];
@@ -74,21 +68,20 @@ public class Proveedor extends Persona {
     }
 
 
-    //Metodo de Busqueda por nombre y cedula
     public int searchByName(Proveedor[] proveedores, String nombre){
         int bajo = 0;
         int alto = proveedores.length - 1;
         while (bajo <= alto) {
             int medio = (bajo + alto) / 2;
             if (proveedores[medio].getNombre().equalsIgnoreCase(nombre)) {
-                return medio; // Se encontró el nombre
+                return medio;
             } else if (proveedores[medio].getNombre().compareToIgnoreCase(nombre) < 0) {
-                bajo = medio + 1; // Buscar en la mitad superior
+                bajo = medio + 1;
             } else {
-                alto = medio - 1; // Buscar en la mitad inferior
+                alto = medio - 1; 
             }
         }
-        return -1; // No se encontró el nombre
+        return -1;
     }
 
     public int searchByCedula(Proveedor[] proveedores, String cedula){
@@ -97,17 +90,16 @@ public class Proveedor extends Persona {
         while (bajo <= alto) {
             int medio = (bajo + alto) / 2;
             if (proveedores[medio].getCedula().equalsIgnoreCase(cedula)) {
-                return medio; // Se encontró la cédula
+                return medio;
             } else if (proveedores[medio].getCedula().compareToIgnoreCase(cedula) < 0) {
-                bajo = medio + 1; // Buscar en la mitad superior
+                bajo = medio + 1;
             } else {
-                alto = medio - 1; // Buscar en la mitad inferior
+                alto = medio - 1;
             }
         }
-        return -1; // No se encontró la cédula
+        return -1;
     }
 
-    // Método para agregar un producto a la lista de productos del proveedor
     public void agregarProducto(Producto producto) {
         if (producto != null) {
             productos.add(producto);
@@ -115,7 +107,7 @@ public class Proveedor extends Persona {
             System.out.println("El producto no puede ser nulo.");
         }
     }
-    // Método para eliminar un producto de la lista de productos del proveedor
+
     public void eliminarProducto(Producto producto) {
         if (productos.contains(producto)) {
             productos.remove(producto);
@@ -126,12 +118,12 @@ public class Proveedor extends Persona {
 
     @Override
     public String toString() {
-        return "PRoveedor{" +
-                "cedula='" + getCedula() + '\'' +
-                ", nombre='" + getNombre() + '\'' +
-                ", ruc='" + ruc + '\'' +
-                ", empresa='" + empresa + '\'' +
-                ", productos=" + productos +
-                '}';
+        return "\n========= PROVEEDOR =========\n" +
+            "Cédula      : " + getCedula() + "\n" +
+            "Nombre      : " + getNombre() + "\n" +
+            "RUC         : " + ruc + "\n" +
+            "Empresa     : " + empresa + "\n" +
+            "==============================\n";
     }
+    
 }

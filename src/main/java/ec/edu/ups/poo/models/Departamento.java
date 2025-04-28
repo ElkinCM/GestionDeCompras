@@ -37,4 +37,13 @@ public class Departamento {
     public void setPresupuesto(String presupuesto) {
         this.presupuesto = presupuesto;
     }
+
+    @Override
+    public String toString() {
+        return "\n========= DEPARTAMENTO =========\n" +
+            "Nombre        : " + nombreDp + "\n" +
+            "Descripción   : " + descripcion + "\n" +
+            "Presupuesto   : $" + presupuesto + "\n" +
+            "=================================\n";
+    }
 }
