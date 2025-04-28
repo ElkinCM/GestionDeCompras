@@ -2,10 +2,12 @@ package ec.edu.ups.poo.models.producto;
 
 import java.util.ArrayList;
 
+import ec.edu.ups.poo.models.Proveedor;
+
 public class ProductoFisico extends Producto {
     private String descripcion;
     private String presentacion;
-
+    private Proveedor proveedor; 
     public ProductoFisico() {
     }
 
@@ -13,6 +15,14 @@ public class ProductoFisico extends Producto {
         super(id, nombre, precioUnitario, cantidad);
         this.descripcion = descripcion;
         this.presentacion = presentacion;
+    }
+
+        public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
     }
 
     public String getDescripcion() {

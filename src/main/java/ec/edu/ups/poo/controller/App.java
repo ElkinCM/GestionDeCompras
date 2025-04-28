@@ -107,7 +107,18 @@ public class App {
                             String descripcion = leer.nextLine();
                             System.out.print("Ingrese presentación: ");
                             String presentacion = leer.nextLine();
+
+                            // Mostrar lista de proveedores
+                            System.out.println("Seleccione un proveedor:");
+                            for (int i = 0; i < proveedores.size(); i++) {
+                                System.out.println((i + 1) + ". " + proveedores.get(i).getNombre());
+                            }
+                            int proveedorIndex = leer.nextInt() - 1;
+                            Proveedor proveedorSeleccionado = proveedores.get(proveedorIndex);
+
                             ProductoFisico producto = new ProductoFisico(id, nombreProducto, precio, cantidad, descripcion, presentacion);
+                            producto.setProveedor(proveedorSeleccionado); // Asignar proveedor al producto
+
                             productos.add(producto);
                             System.out.println("Producto registrado correctamente.");
                         } else if (tipoProducto == 2) {
@@ -125,12 +136,24 @@ public class App {
                             String tipoServicio = leer.nextLine();
                             System.out.print("Ingrese categoría del servicio: ");
                             String categoriaServicio = leer.nextLine();
-                            
-                            Servicio servicio = new Servicio(idServicio, nombreServicio, precioServicio, cantidadServicio, proveedores, tipoServicio, categoriaServicio);
+
+                            // Mostrar lista de proveedores
+                            System.out.println("Seleccione un proveedor:");
+                            for (int i = 0; i < proveedores.size(); i++) {
+                                System.out.println((i + 1) + ". " + proveedores.get(i).getNombre());
+                            }
+                            int proveedorIndex = leer.nextInt() - 1;
+                            Proveedor proveedorSeleccionado = proveedores.get(proveedorIndex);
+
+                            ArrayList<Proveedor> proveedorLista = new ArrayList<>();
+                            proveedorLista.add(proveedorSeleccionado);
+
+                            Servicio servicio = new Servicio(idServicio, nombreServicio, precioServicio, cantidadServicio, proveedorLista, tipoServicio, categoriaServicio);
                             servicios.add(servicio);
                             System.out.println("Servicio registrado correctamente.");
                         }
                         break;
+
 
 
                     case 3: 
@@ -177,16 +200,40 @@ public class App {
                         System.out.println("Solicitud registrada exitosamente con ID: " + solicitud.getId());
                         break;
 
-                    case 4:
+                        case 4:
                         System.out.println("** LISTAR PROVEEDORES **");
                         if (proveedores.isEmpty()) {
                             System.out.println("No hay proveedores registrados.");
                         } else {
                             for (Proveedor p : proveedores) {
-                                System.out.println(p);
+                                System.out.println(p); 
+                                System.out.println("Productos y Servicios asociados:");
+                    
+                                boolean tieneProductosOServicios = false;
+                    
+                                for (ProductoFisico prod : productos) {
+                                    if (prod.getProveedor().equals(p)) {
+                                        System.out.println("- Producto Físico: " + prod.getNombre());
+                                        tieneProductosOServicios = true; 
+                                    }
+                                }
+                    
+                                // Listar servicios asociados
+                                for (Servicio serv : servicios) {
+                                    if (serv.getProveedores().contains(p)) {
+                                        System.out.println("- Servicio: " + serv.getNombre());
+                                        tieneProductosOServicios = true; 
+                                    }
+                                }
+                    
+                                if (!tieneProductosOServicios) {
+                                    System.out.println("  (No tiene productos ni servicios asociados)");
+                                }
                             }
                         }
                         break;
+                    
+                    
 
                         case 5:
                         System.out.println("** LISTAR PRODUCTOS Y SERVICIOS **");
@@ -225,7 +272,7 @@ public class App {
                         int opcionBuscar = leer.nextInt();
                         if (opcionBuscar == 1){
                             System.out.print("Ingrese la cédula del proveedor: ");
-                            String cedulaBuscar = leer.nextLine();
+                            String cedulaBuscar = leer.next();
                             proveedorG.sortByCedulaInsertion(proveedores);
                             int index = proveedorG.searchByCedula(proveedores, cedulaBuscar);
                             if (index != -1) {
