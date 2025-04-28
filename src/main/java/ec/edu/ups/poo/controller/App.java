@@ -28,7 +28,8 @@ public class App {
             System.out.println("3. Buscar Proveedor y Agregar Producto");
             System.out.println("4. Registrar Solicitud de Compra");
             System.out.println("5. Buscar Solicitud de Compra");
-            System.out.println("6. Salir");
+            System.out.println("6. Actualizar Estado de Solicitud de Compra");
+            System.out.println("7. Salir");
             System.out.print("Seleccione una opción: ");
             
             while (!leer.hasNextInt()) {
@@ -285,13 +286,61 @@ public class App {
                     break;
 
                 case 6:
-                    System.out.println("¡Gracias por usar el programa!");
-                    break;
+                    System.out.println("Actualizar el estado de solicitud de compra");
+
+                    if (solicitudes.isEmpty()) {
+                        System.out.println("No hay solicitudes registradas.");
+                        break;
+                    }
+                    System.out.print("Ingrese el ID de la solicitud a actualizar: ");
+                    int idActualizar = leer.nextInt();
+                    SolicitudCompra solicitudCompra = null;
+
+                    for (int i=0; i< solicitudes.size();i++){
+                        if (solicitudes.get(i).getId() == idActualizar) {
+                            solicitudCompra = solicitudes.get(i);
+                            break;
+                        }
+                    }
+
+                    if (solicitudCompra != null) {
+                        System.out.println("Estado actual: " + solicitudCompra.getEstadoSolicitud());
+                        System.out.println("Seleccione el nuevo estado:");
+                        System.out.println("1. SOLICITADA");
+                        System.out.println("2. EN_REVISION");
+                        System.out.println("3. APROBADA");
+                        System.out.println("4. RECHAZADA");
+                        int nuevoEstadoOpc = leer.nextInt();
+
+
+                        EstadoSolicitud nuevoEstado = null;
+                        switch (nuevoEstadoOpc) {
+                            case 1:
+                                nuevoEstado=EstadoSolicitud.SOLICITADA;
+                                break;
+                            case 2:
+                                nuevoEstado=EstadoSolicitud.EN_REVISION;
+                                break;
+                            case 3: 
+                                nuevoEstado=EstadoSolicitud.APROBADA;
+                                break;
+                            case 4:
+                                nuevoEstado=EstadoSolicitud.RECHAZADA;
+                                break;
+                        }
+                        solicitudCompra.setEstado(nuevoEstado);
+                        System.out.println("Estado actualizado a: " + nuevoEstado.name());
+                    } else {
+                        System.out.println("Solicitud no encontrada.");
+                    }
+
+                case 7:
+                    System.out.println("Saliendo del programa...");
 
                 default:
                     System.out.println("Opción no válida.");
             }
-        } while (option != 6);
+        } while (option != 7);
         }
     }
 }
