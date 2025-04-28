@@ -225,7 +225,7 @@ public class App {
                         int opcionBuscar = leer.nextInt();
                         if (opcionBuscar == 1){
                             System.out.print("Ingrese la cédula del proveedor: ");
-                            String cedulaBuscar = leer.nextLine();
+                            String cedulaBuscar = leer.next();
                             proveedorG.sortByCedulaInsertion(proveedores);
                             int index = proveedorG.searchByCedula(proveedores, cedulaBuscar);
                             if (index != -1) {
@@ -250,7 +250,7 @@ public class App {
                             int tipoProductoBuscar = leer.nextInt();
                             if (tipoProductoBuscar==1){
                                 System.out.print("Ingrese el nombre del producto: ");
-                                String nombreBuscar = leer.nextLine();
+                                String nombreBuscar = leer.next();
                                 productoFisico.sortByNombreInsertion(productos);
                                 int index = productoFisico.searchByNombre(productos, nombreBuscar);
                                 if (index != -1) {
@@ -261,7 +261,7 @@ public class App {
                                 
                             }else if (tipoProductoBuscar==2){
                                 System.out.print("Ingrese el nombre del servicio: ");
-                                String nombreBuscar = leer.nextLine();
+                                String nombreBuscar = leer.next();
                                 servicioG.sortByNombreInsertion(servicios);
                                 int index = servicioG.searchByNombre(servicios, nombreBuscar);
                                 if (index != -1) {
