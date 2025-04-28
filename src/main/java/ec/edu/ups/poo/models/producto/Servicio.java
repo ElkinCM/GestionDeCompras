@@ -8,7 +8,8 @@ import java.util.List;
 public class Servicio extends Producto {
     private String tipo;
     private String categoria;
-
+    private List<Proveedor> proveedores = new ArrayList<>();
+    
     public Servicio() {
     }
 
@@ -16,6 +17,11 @@ public class Servicio extends Producto {
         super(id, nombre, precioUnitario, cantidad);
         this.tipo = tipo;
         this.categoria = categoria;
+        this.proveedores = proveedores;
+    }
+
+    public List<Proveedor> getProveedores() {
+        return proveedores;
     }
 
     public String getTipo() {
@@ -50,6 +56,7 @@ public class Servicio extends Producto {
             productos.set(j + 1, key);
         }
     }
+
     public void sortByNombreInsertion(ArrayList<Servicio> productos) {
         for (int i = 1; i < productos.size(); i++) {
             Servicio key = productos.get(i);
@@ -61,6 +68,7 @@ public class Servicio extends Producto {
             productos.set(j + 1, key);
         }
     }
+
     public int searchById(ArrayList<Servicio> productos, int id) {
         int bajo = 0;
         int alto = productos.size() - 1;
@@ -73,8 +81,10 @@ public class Servicio extends Producto {
             } else {
                 alto = medio - 1; 
             }
-    }return -1; 
+        }
+        return -1;
     }
+
     public int searchByNombre(ArrayList<Servicio> productos, String nombre) {
         int bajo = 0;
         int alto = productos.size() - 1;
@@ -87,9 +97,9 @@ public class Servicio extends Producto {
             } else {
                 alto = medio - 1;
             }
-        }return -1;
+        }
+        return -1;
     }
-
 
     @Override
     public String toString() {
@@ -102,6 +112,4 @@ public class Servicio extends Producto {
                 "Categoría     : " + categoria + "\n" +
                 "=============================\n";
     }
-    
-
 }
