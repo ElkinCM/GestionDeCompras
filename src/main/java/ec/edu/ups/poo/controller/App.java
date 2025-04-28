@@ -1,16 +1,15 @@
 package ec.edu.ups.poo.controller;
 
 import ec.edu.ups.poo.models.producto.ProductoFisico;
+import ec.edu.ups.poo.models.producto.Servicio;
 import ec.edu.ups.poo.models.producto.Producto;
 import ec.edu.ups.poo.models.Proveedor;
 import ec.edu.ups.poo.models.DetalleCompra;
 import ec.edu.ups.poo.models.SolicitudCompra;
-import ec.edu.ups.poo.models.enums.DepartamentoEnum;
+import ec.edu.ups.poo.models.Departamento;
 import ec.edu.ups.poo.models.enums.EstadoSolicitud;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Scanner;
 
 public class App {
@@ -18,329 +17,316 @@ public class App {
         int option = 0;
         try (Scanner leer = new Scanner(System.in)) {
             ArrayList<Proveedor> proveedores = new ArrayList<>();
-        ArrayList<SolicitudCompra> solicitudes = new ArrayList<>();
-        int solicitudIdCounter = 1; // Contador para generar IDs automáticos de solicitudes
+            ArrayList<ProductoFisico> productos = new ArrayList<>();
+            ArrayList<SolicitudCompra> solicitudes = new ArrayList<>();
+            ArrayList<Servicio> servicios = new ArrayList<>();
+            ArrayList<Departamento> departamentos = new ArrayList<>();
+            int solicitudIdCounter = 1;
 
-        do {
-            System.out.println("\n========= MENÚ DEL PROGRAMA =========");
-            System.out.println("1. Registrar Proveedor");
-            System.out.println("2. Mostrar Proveedores");
-            System.out.println("3. Buscar Proveedor y Agregar Producto");
-            System.out.println("4. Registrar Solicitud de Compra");
-            System.out.println("5. Buscar Solicitud de Compra");
-            System.out.println("6. Actualizar Estado de Solicitud de Compra");
-            System.out.println("7. Salir");
-            System.out.print("Seleccione una opción: ");
-            
-            while (!leer.hasNextInt()) {
-                System.out.println("Error: debe ingresar un número.");
-                leer.next();
-            }
-            option = leer.nextInt();
-            leer.nextLine(); // Limpiar buffer
+            do {
+                System.out.println("\n===== SISTEMA DE GESTIÓN DE COMPRAS ERP =====");
+                System.out.println("0. Registrar departamento");
+                System.out.println("1. Registrar proveedor");
+                System.out.println("2. Registrar producto");
+                System.out.println("3. Registrar solicitud de compra");
+                System.out.println("4. Listar proveedores");
+                System.out.println("5. Listar productos");
+                System.out.println("6. Listar solicitudes de compra");
+                System.out.println("7. Buscar proveedor por ID");
+                System.out.println("8. Buscar producto por nombre");
+                System.out.println("9. Buscar solicitud por número");
+                System.out.println("13. Aprobar / Rechazar solicitud de compra");
+                System.out.println("14. Calcular total de una solicitud");
+                System.out.println("15. Salir");
+                System.out.print("Seleccione una opción: ");
 
-            switch (option) {
-                case 1:
-                    System.out.println("\n** REGISTRAR PROVEEDOR **");
-                    System.out.print("Ingrese la cédula del proveedor: ");
-                    String cedula = leer.nextLine();
-                    System.out.print("Ingrese el nombre del proveedor: ");
-                    String nombre = leer.nextLine();
-                    System.out.print("Ingrese el RUC del proveedor: ");
-                    String ruc = leer.nextLine();
-                    System.out.print("Ingrese el nombre de la empresa: ");
-                    String empresa = leer.nextLine();
-
-                    Proveedor nuevoProveedor = new Proveedor(cedula, nombre, ruc, empresa);
-                    proveedores.add(nuevoProveedor);
-
-                    System.out.println("Proveedor registrado exitosamente.");
-                    break;
-
-                case 2:
-                    System.out.println("\n** MOSTRAR PROVEEDORES **");
-                    if (proveedores.isEmpty()) {
-                        System.out.println("No hay proveedores registrados.");
-                    } else {
-                        for (int i = 0; i < proveedores.size(); i++) {
-                            Proveedor proveedorShow = proveedores.get(i);
-                            System.out.println("\nProveedor #" + (i + 1));
-                            System.out.println("Nombre: " + proveedorShow.getNombre());
-                            System.out.println("Cédula: " + proveedorShow.getCedula());
-                            System.out.println("Empresa: " + proveedorShow.getEmpresa());
-                            System.out.println("RUC: " + proveedorShow.getRuc());
-
-                            if (proveedorShow.getProductos().isEmpty()) {
-                                System.out.println("  No tiene productos registrados.");
-                            } else {
-                                System.out.println("  Productos registrados:");
-                                for (int j = 0; j < proveedorShow.getProductos().size(); j++) {
-                                    ProductoFisico producto = (ProductoFisico) proveedorShow.getProductos().get(j);
-                                    System.out.println("    Producto ID: " + producto.getId());
-                                    System.out.println("    Nombre: " + producto.getNombre());
-                                    System.out.println("    Precio Unitario: " + producto.getPrecioUnitario());
-                                    System.out.println("    Cantidad: " + producto.getCantidad());
-                                    System.out.println("    Descripción: " + producto.getDescripcion());
-                                    System.out.println("    Presentación: " + producto.getPresentacion());
-                                    System.out.println("    --------------------------");
-                                }
-                            }
-                            System.out.println("-------------------------------------------------");
-                        }
-                    }
-                    break;
-
-                    case 3:
-                    System.out.println("\n** BUSCAR PROVEEDOR Y AGREGAR PRODUCTO **");
-                    System.out.println("Seleccione el criterio de búsqueda:");
-                    System.out.println("1. Buscar por nombre");
-                    System.out.println("2. Buscar por cédula");
-                    System.out.print("Seleccione una opción: ");
-                    int busquedaCriterio = leer.nextInt();
-                    leer.nextLine(); // Limpiar buffer
-                
-                    if (busquedaCriterio == 1) {
-                        // Ordenar proveedores por nombre antes de hacer búsqueda binaria
-                        Collections.sort(proveedores, Comparator.comparing(Proveedor::getNombre));
-                
-                        System.out.print("Ingrese el nombre del proveedor a buscar: ");
-                        String nombreBusqueda = leer.nextLine();
-                
-                        // Buscar proveedor por nombre usando búsqueda binaria
-                        int indexNombre = Collections.binarySearch(proveedores, new Proveedor(null, nombreBusqueda, null, null), Comparator.comparing(Proveedor::getNombre));
-                
-                        if (indexNombre >= 0) {
-                            Proveedor proveedorEncontrado = proveedores.get(indexNombre);
-                            System.out.println("Proveedor encontrado: " + proveedorEncontrado.getNombre());
-                
-                            // Ahora le permitimos agregar productos al proveedor
-                            System.out.print("¿Desea agregar productos a este proveedor? (s/n): ");
-                            String respuesta = leer.nextLine();
-                
-                            if (respuesta.equalsIgnoreCase("s")) {
-                                System.out.print("Ingrese el ID del producto (número): ");
-                                int id = leer.nextInt();
-                                leer.nextLine(); // Limpiar buffer
-                                System.out.print("Ingrese el nombre del producto: ");
-                                String nombreProducto = leer.nextLine();
-                                System.out.print("Ingrese el precio unitario del producto: ");
-                                double precioUnitario = leer.nextDouble();
-                                System.out.print("Ingrese la cantidad del producto: ");
-                                int cantidadProducto = leer.nextInt();
-                                leer.nextLine(); // Limpiar buffer
-                                System.out.print("Ingrese la descripción del producto: ");
-                                String descripcion = leer.nextLine();
-                                System.out.print("Ingrese la presentación del producto: ");
-                                String presentacion = leer.nextLine();
-                
-                                ProductoFisico nuevoProducto = new ProductoFisico(id, nombreProducto, precioUnitario, cantidadProducto, descripcion, presentacion);
-                                proveedorEncontrado.getProductos().add(nuevoProducto);
-                
-                                System.out.println("Producto agregado exitosamente al proveedor.");
-                                System.out.println("----------------------------------");
-                                // Imprimir cálculos de costo con IVA
-                                nuevoProducto.calcularCostoIVA();
-                            }
-                        } else {
-                            System.out.println("Proveedor no encontrado.");
-                        }
-                
-                    } else if (busquedaCriterio == 2) {
-                        // Ordenar proveedores por cédula antes de hacer búsqueda binaria
-                        Collections.sort(proveedores, Comparator.comparing(Proveedor::getCedula));
-                
-                        System.out.print("Ingrese la cédula del proveedor a buscar: ");
-                        String cedulaBusqueda = leer.nextLine();
-                
-                        // Buscar proveedor por cédula usando búsqueda binaria
-                        int indexCedula = Collections.binarySearch(proveedores, new Proveedor(cedulaBusqueda, null, null, null), Comparator.comparing(Proveedor::getCedula));
-                
-                        if (indexCedula >= 0) {
-                            Proveedor proveedorEncontrado = proveedores.get(indexCedula);
-                            System.out.println("Proveedor encontrado: " + proveedorEncontrado.getNombre());
-                
-                            // Ahora le permitimos agregar productos al proveedor
-                            System.out.print("¿Desea agregar productos a este proveedor? (s/n): ");
-                            String respuesta = leer.nextLine();
-                
-                            if (respuesta.equalsIgnoreCase("s")) {
-                                System.out.print("Ingrese el ID del producto (número): ");
-                                int id = leer.nextInt();
-                                leer.nextLine(); // Limpiar buffer
-                                System.out.print("Ingrese el nombre del producto: ");
-                                String nombreProducto = leer.nextLine();
-                                System.out.print("Ingrese el precio unitario del producto: ");
-                                double precioUnitario = leer.nextDouble();
-                                System.out.print("Ingrese la cantidad del producto: ");
-                                int cantidadProducto = leer.nextInt();
-                                leer.nextLine(); // Limpiar buffer
-                                System.out.print("Ingrese la descripción del producto: ");
-                                String descripcion = leer.nextLine();
-                                System.out.print("Ingrese la presentación del producto: ");
-                                String presentacion = leer.nextLine();
-                
-                                ProductoFisico nuevoProducto = new ProductoFisico(id, nombreProducto, precioUnitario, cantidadProducto, descripcion, presentacion);
-                                proveedorEncontrado.getProductos().add(nuevoProducto);
-                
-                                System.out.println("Producto agregado exitosamente al proveedor.");
-                
-                                // Imprimir cálculos de costo con IVA
-                                nuevoProducto.calcularCostoIVA();
-                            }
-                        } else {
-                            System.out.println("Proveedor no encontrado.");
-                        }
-                    } else {
-                        System.out.println("Opción no válida.");
-                    }
-                    break;
-                
-                case 4:
-                    System.out.println("\n** REGISTRAR SOLICITUD DE COMPRA **");
-                    if (proveedores.isEmpty()) {
-                        System.out.println("No hay proveedores registrados.");
+                while (!leer.hasNextInt()) {
+                    System.out.println("Error: debe ingresar un número.");
+                    leer.next();
+                }
+                option = leer.nextInt();
+                leer.nextLine();
+                switch (option) {
+                    case 0:
+                        System.out.println("\n** REGISTRAR DEPARTAMENTO **");
+                        System.out.print("Ingrese nombre del departamento: ");
+                        String nombreDp = leer.nextLine();
+                        System.out.print("Ingrese descripción: ");
+                        String descripcionDp = leer.nextLine();
+                        System.out.print("Ingrese presupuesto: ");
+                        String presupuestoDp = leer.nextLine();
+                        Departamento nuevoDepartamento = new Departamento(nombreDp, descripcionDp, presupuestoDp);
+                        departamentos.add(nuevoDepartamento);
+                        System.out.println("Departamento registrado exitosamente.");
                         break;
-                    }
 
-                    System.out.print("Ingrese el nombre del solicitante: ");
-                    String solicitante = leer.nextLine();
+                    case 1:
+                        System.out.println("\n** REGISTRAR PROVEEDOR **");
+                        System.out.print("Ingrese la cédula del proveedor: ");
+                        String cedula = leer.nextLine();
+                        System.out.print("Ingrese el nombre del proveedor: ");
+                        String nombre = leer.nextLine();
+                        System.out.print("Ingrese el RUC del proveedor: ");
+                        String ruc = leer.nextLine();
+                        System.out.print("Ingrese el nombre de la empresa: ");
+                        String empresa = leer.nextLine();
+                        Proveedor proveedor = new Proveedor(cedula, nombre, ruc, empresa);
+                        proveedores.add(proveedor);
+                        System.out.println("Proveedor registrado exitosamente.");
+                        break;
 
-                    System.out.println("Seleccione el departamento:");
-                    for (DepartamentoEnum dep : DepartamentoEnum.values()) {
-                        System.out.println(dep.ordinal() + 1 + ". " + dep.name());
-                    }
-                    int departamentoOpc = leer.nextInt();
-                    DepartamentoEnum departamento = DepartamentoEnum.values()[departamentoOpc - 1];
-
-                    SolicitudCompra nuevaSolicitud = new SolicitudCompra(solicitante, departamento);
-                    nuevaSolicitud.setId(solicitudIdCounter); // Asignamos el ID automáticamente
-                    solicitudIdCounter++; // Aumentamos el contador para la siguiente solicitud
-
-                    System.out.println("Solicitud registrada exitosamente con ID: " + nuevaSolicitud.getId());
-
-                    System.out.println("Seleccione el proveedor para comprar:");
-                    for (int i = 0; i < proveedores.size(); i++) {
-                        System.out.println((i + 1) + ". " + proveedores.get(i).getNombre() + " (" + proveedores.get(i).getEmpresa() + ")");
-                    }
-                    int proveedorSeleccionado = leer.nextInt();
-                    leer.nextLine();
-                    Proveedor proveedor = proveedores.get(proveedorSeleccionado - 1);
-
-                    System.out.println("Productos disponibles:");
-                    for (int i = 0; i < proveedor.getProductos().size(); i++) {
-                        System.out.println((i + 1) + ". " + proveedor.getProductos().get(i).getNombre());
-                    }
-
-                    boolean seguirComprando = true;
-                    while (seguirComprando) {
-                        System.out.print("Seleccione el producto: ");
-                        int productoSeleccionado = leer.nextInt();
-                        Producto producto = proveedor.getProductos().get(productoSeleccionado - 1);
-
-                        System.out.print("Cantidad a comprar: ");
-                        int cantidadCompra = leer.nextInt();
+                        case 2:
+                        System.out.println("\n** REGISTRAR PRODUCTO **");
+                        if (proveedores.isEmpty()) {
+                            System.out.println("Debe registrar un proveedor primero.");
+                            break;
+                        }
+                        System.out.println("Seleccione el tipo de producto a registrar:");
+                        System.out.println("1. Producto Físico");
+                        System.out.println("2. Servicio");
+                        int tipoProducto = leer.nextInt();
                         leer.nextLine();
 
-                        DetalleCompra detalle = new DetalleCompra(producto, cantidadCompra);
-                        nuevaSolicitud.getDetalles().add(detalle);
-
-                        System.out.print("¿Desea agregar otro producto? (s/n): ");
-                        String respuestaCompra = leer.nextLine();
-                        if (respuestaCompra.equalsIgnoreCase("n")) {
-                            seguirComprando = false;
+                        if (tipoProducto == 1) {
+                            System.out.print("Ingrese el ID del producto: ");
+                            int id = leer.nextInt();
+                            leer.nextLine();
+                            System.out.print("Ingrese el nombre del producto: ");
+                            String nombreProducto = leer.nextLine();
+                            System.out.print("Ingrese precio unitario: ");
+                            double precio = leer.nextDouble();
+                            System.out.print("Ingrese cantidad: ");
+                            int cantidad = leer.nextInt();
+                            leer.nextLine();
+                            System.out.print("Ingrese descripción: ");
+                            String descripcion = leer.nextLine();
+                            System.out.print("Ingrese presentación: ");
+                            String presentacion = leer.nextLine();
+                            ProductoFisico producto = new ProductoFisico(id, nombreProducto, precio, cantidad, descripcion, presentacion);
+                            productos.add(producto);
+                            System.out.println("Producto registrado correctamente.");
+                        } else if (tipoProducto == 2) {
+                            System.out.print("Ingrese el ID del servicio: ");
+                            int idServicio = leer.nextInt();
+                            leer.nextLine(); 
+                            System.out.print("Ingrese el nombre del servicio: ");
+                            String nombreServicio = leer.nextLine();
+                            System.out.print("Ingrese precio unitario: ");
+                            int precioServicio = leer.nextInt();
+                            System.out.print("Ingrese cantidad: ");
+                            int cantidadServicio = leer.nextInt();
+                            leer.nextLine(); 
+                            System.out.print("Ingrese tipo del servicio: ");
+                            String tipoServicio = leer.nextLine();
+                            System.out.print("Ingrese categoría del servicio: ");
+                            String categoriaServicio = leer.nextLine();
+                            
+                            Servicio servicio = new Servicio(idServicio, nombreServicio, precioServicio, cantidadServicio, proveedores, tipoServicio, categoriaServicio);
+                            servicios.add(servicio);
+                            System.out.println("Servicio registrado correctamente.");
                         }
-                    }
-
-                    solicitudes.add(nuevaSolicitud);
-                    break;
-
-                case 5:
-                    System.out.println("\n** BUSCAR SOLICITUD DE COMPRA **");
-                    if (solicitudes.isEmpty()) {
-                        System.out.println("No hay solicitudes registradas.");
                         break;
-                    }
 
-                    System.out.print("Ingrese el ID de la solicitud: ");
-                    while (!leer.hasNextInt()) {
-                        System.out.println("Error: debe ingresar un número.");
-                        leer.next(); // Limpiar buffer si no es un número
-                    }
-                    int idBusqueda = leer.nextInt();
 
-                    SolicitudCompra solicitudEncontrada = null;
-                    for (SolicitudCompra solicitud : solicitudes) {
-                        if (solicitud.getId() == idBusqueda) {
-                            solicitudEncontrada = solicitud;
+                    case 3: 
+                        System.out.println("\n** REGISTRAR SOLICITUD DE COMPRA **");
+                        if (productos.isEmpty()) {
+                            System.out.println("Debe registrar productos primero.");
                             break;
                         }
-                    }
-
-                    if (solicitudEncontrada != null) {
-                        System.out.println("\nSolicitud #" + solicitudEncontrada.getId());
-                        System.out.println("Solicitante: " + solicitudEncontrada.getSolicitante());
-                        System.out.println("Estado: " + solicitudEncontrada.getEstadoSolicitud());
-                    } else {
-                        System.out.println("Solicitud no encontrada.");
-                    }
-                    break;
-
-                case 6:
-                    System.out.println("Actualizar el estado de solicitud de compra");
-
-                    if (solicitudes.isEmpty()) {
-                        System.out.println("No hay solicitudes registradas.");
-                        break;
-                    }
-                    System.out.print("Ingrese el ID de la solicitud a actualizar: ");
-                    int idActualizar = leer.nextInt();
-                    SolicitudCompra solicitudCompra = null;
-
-                    for (int i=0; i< solicitudes.size();i++){
-                        if (solicitudes.get(i).getId() == idActualizar) {
-                            solicitudCompra = solicitudes.get(i);
+                        if (departamentos.isEmpty()) {
+                            System.out.println("Debe registrar departamentos primero.");
                             break;
                         }
-                    }
-
-                    if (solicitudCompra != null) {
-                        System.out.println("Estado actual: " + solicitudCompra.getEstadoSolicitud());
-                        System.out.println("Seleccione el nuevo estado:");
-                        System.out.println("1. SOLICITADA");
-                        System.out.println("2. EN_REVISION");
-                        System.out.println("3. APROBADA");
-                        System.out.println("4. RECHAZADA");
-                        int nuevoEstadoOpc = leer.nextInt();
-
-
-                        EstadoSolicitud nuevoEstado = null;
-                        switch (nuevoEstadoOpc) {
-                            case 1:
-                                nuevoEstado=EstadoSolicitud.SOLICITADA;
-                                break;
-                            case 2:
-                                nuevoEstado=EstadoSolicitud.EN_REVISION;
-                                break;
-                            case 3: 
-                                nuevoEstado=EstadoSolicitud.APROBADA;
-                                break;
-                            case 4:
-                                nuevoEstado=EstadoSolicitud.RECHAZADA;
-                                break;
+                        System.out.print("Ingrese el nombre del solicitante: ");
+                        String solicitante = leer.nextLine();
+                        System.out.println("Seleccione el departamento:");
+                        for (int i = 0; i < departamentos.size(); i++) {
+                            System.out.println((i + 1) + ". " + departamentos.get(i).getNombreDp());
                         }
-                        solicitudCompra.setEstado(nuevoEstado);
-                        System.out.println("Estado actualizado a: " + nuevoEstado.name());
-                    } else {
-                        System.out.println("Solicitud no encontrada.");
-                    }
+                        int depSeleccion = leer.nextInt();
+                        Departamento departamentoSeleccionado = departamentos.get(depSeleccion - 1);
+                        SolicitudCompra solicitud = new SolicitudCompra(solicitante, departamentoSeleccionado);
+                        solicitud.setId(solicitudIdCounter++);
 
-                case 7:
-                    System.out.println("Saliendo del programa...");
+                        boolean agregarProductos = true;
+                        while (agregarProductos) {
+                            System.out.println("Seleccione un producto:");
+                            for (int i = 0; i < productos.size(); i++) {
+                                System.out.println((i + 1) + ". " + productos.get(i).getNombre());
+                            }
+                            int productoIndex = leer.nextInt() - 1;
+                            Producto productoSeleccionado = productos.get(productoIndex);
 
-                default:
-                    System.out.println("Opción no válida.");
-            }
-        } while (option != 7);
+                            System.out.print("Ingrese la cantidad: ");
+                            int cantidadDetalle = leer.nextInt();
+                            solicitud.getDetalles().add(new DetalleCompra(productoSeleccionado, cantidadDetalle));
+
+                            System.out.print("¿Desea agregar otro producto? (s/n): ");
+                            leer.nextLine();
+                            String continuar = leer.nextLine();
+                            agregarProductos = continuar.equalsIgnoreCase("s");
+                        }
+
+                        solicitudes.add(solicitud);
+                        System.out.println("Solicitud registrada exitosamente con ID: " + solicitud.getId());
+                        break;
+
+                    case 4:
+                        System.out.println("\n** LISTAR PROVEEDORES **");
+                        if (proveedores.isEmpty()) {
+                            System.out.println("No hay proveedores registrados.");
+                        } else {
+                            for (Proveedor p : proveedores) {
+                                System.out.println(p);
+                            }
+                        }
+                        break;
+
+                        case 5:
+                        System.out.println("\n** LISTAR PRODUCTOS Y SERVICIOS **");
+                        if (productos.isEmpty() && servicios.isEmpty()) {
+                            System.out.println("No hay productos ni servicios registrados.");
+                        } else {
+                            System.out.println("Productos físicos:");
+                            for (ProductoFisico p : productos) {
+                                System.out.println(p);
+                            }
+                    
+                            System.out.println("Servicios:");
+                            for (Servicio s : servicios) {
+                                System.out.println(s);
+                            }
+                        }
+                        break;
+
+                    case 6:
+                        System.out.println("\n** LISTAR SOLICITUDES DE COMPRA **");
+                        if (solicitudes.isEmpty()) {
+                            System.out.println("No hay solicitudes registradas.");
+                        } else {
+                            for (SolicitudCompra s : solicitudes) {
+                                System.out.println(s);
+                            }
+                        }
+                        break;
+
+                    case 7: 
+                        System.out.println("\n** BUSCAR PROVEEDOR POR ID **");
+                        System.out.print("Ingrese la cédula del proveedor: ");
+                        String buscarCedula = leer.nextLine();
+                        Proveedor encontrado = null;
+                        for (Proveedor p : proveedores) {
+                            if (p.getCedula().equals(buscarCedula)) {
+                                encontrado = p;
+                                break;
+                            }
+                        }
+                        if (encontrado != null) {
+                            System.out.println(encontrado);
+                        } else {
+                            System.out.println("Proveedor no encontrado.");
+                        }
+                        break;
+
+                    case 8:
+                        System.out.println("\n** BUSCAR PRODUCTO POR NOMBRE **");
+                        System.out.print("Ingrese el nombre del producto: ");
+                        String buscarNombre = leer.nextLine();
+                        ProductoFisico productoEncontrado = null;
+                        for (ProductoFisico p : productos) {
+                            if (p.getNombre().equalsIgnoreCase(buscarNombre)) {
+                                productoEncontrado = p;
+                                break;
+                            }
+                        }
+                        if (productoEncontrado != null) {
+                            System.out.println(productoEncontrado);
+                        } else {
+                            System.out.println("Producto no encontrado.");
+                        }
+                        break;
+
+                    case 9:
+                        System.out.println("\n** BUSCAR SOLICITUD POR NÚMERO **");
+                        System.out.print("Ingrese el ID de la solicitud: ");
+                        int buscarId = leer.nextInt();
+                        SolicitudCompra solicitudBuscada = null;
+                        for (SolicitudCompra s : solicitudes) {
+                            if (s.getId() == buscarId) {
+                                solicitudBuscada = s;
+                                break;
+                            }
+                        }
+                        if (solicitudBuscada != null) {
+                            System.out.println(solicitudBuscada);
+                        } else {
+                            System.out.println("Solicitud no encontrada.");
+                        }
+                        break;
+
+                    case 13:
+                        System.out.println("\n** APROBAR/RECHAZAR SOLICITUD **");
+                        System.out.print("Ingrese el ID de la solicitud: ");
+                        int idSolicitud = leer.nextInt();
+                        SolicitudCompra solicitudActualizar = null;
+                        for (SolicitudCompra s : solicitudes) {
+                            if (s.getId() == idSolicitud) {
+                                solicitudActualizar = s;
+                                break;
+                            }
+                        }
+                        if (solicitudActualizar != null) {
+                            System.out.println("Estado actual: " + solicitudActualizar.getEstadoSolicitud());
+                            System.out.println("1. Aprobar");
+                            System.out.println("2. Rechazar");
+                            int opcionEstado = leer.nextInt();
+                            if (opcionEstado == 1) {
+                                solicitudActualizar.setEstado(EstadoSolicitud.APROBADA);
+                            } else if (opcionEstado == 2) {
+                                solicitudActualizar.setEstado(EstadoSolicitud.RECHAZADA);
+                            } else {
+                                System.out.println("Opción inválida.");
+                            }
+                            System.out.println("Estado actualizado.");
+                        } else {
+                            System.out.println("Solicitud no encontrada.");
+                        }
+                        break;
+
+                    case 14:
+                        System.out.println("\n** CALCULAR TOTAL DE UNA SOLICITUD **");
+                        System.out.print("Ingrese el ID de la solicitud: ");
+                        int idCalcular = leer.nextInt();
+                        SolicitudCompra solicitudCalcular = null;
+                        for (SolicitudCompra s : solicitudes) {
+                            if (s.getId() == idCalcular) {
+                                solicitudCalcular = s;
+                                break;
+                            }
+                        }
+                        if (solicitudCalcular != null) {
+                            double subtotal = solicitudCalcular.calcularTotal();
+                            double iva = subtotal * 0.12;
+                            double total = subtotal + iva;
+                            System.out.println("Subtotal: $" + subtotal);
+                            System.out.println("IVA (12%): $" + iva);
+                            System.out.println("Total a pagar: $" + total);
+                        } else {
+                            System.out.println("Solicitud no encontrada.");
+                        }
+                        break;
+
+                    case 15:
+                        System.out.println("Saliendo del programa...");
+                        break;
+
+                    default:
+                        System.out.println("Opción no válida, intente nuevamente.");
+                        break;
+                }
+
+            } while (option != 15);
         }
     }
 }

@@ -46,19 +46,17 @@ public class ProductoFisico extends Producto {
         return (int) costoTotalConIVA;  // Convertimos a entero si lo deseas
     }
     
-    
-    
     @Override
-    public String toString() {
-        return "ProductoFisico{" +
-                "id=" + getId() +
-                ", nombre='" + getNombre() + '\'' +
-                ", precioUnitario=" + getPrecioUnitario() +
-                ", cantidad=" + getCantidad() +
-                ", descripcion='" + descripcion + '\'' +
-                ", presentacion='" + presentacion + '\'' +
-                ", costoConIVA=" + calcularCostoIVA() +  // Agregamos el costo con IVA
-                '}';
-    }
+public String toString() {
+    return "\n========= PRODUCTO =========\n" +
+        "ID           : " + getId() + "\n" +
+        "Nombre       : " + getNombre() + "\n" +
+        "Precio Unit. : $" + String.format("%.2f", getPrecioUnitario()) + "\n" +
+        "Cantidad     : " + getCantidad() + "\n" +
+        "Descripción  : " + descripcion + "\n" +
+        "Presentación : " + presentacion + "\n" +
+        "=============================\n";
+}
+
     
 }
