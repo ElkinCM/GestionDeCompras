@@ -1,5 +1,7 @@
 package ec.edu.ups.poo.models.producto;
 
+import java.util.ArrayList;
+
 public class ProductoFisico extends Producto {
     private String descripcion;
     private String presentacion;
@@ -45,6 +47,57 @@ public class ProductoFisico extends Producto {
     
         return (int) costoTotalConIVA;  // Convertimos a entero si lo deseas
     }
+
+    public void sortByIdInsertion(ArrayList<ProductoFisico> productos) {
+        for (int i = 1; i < productos.size(); i++) {
+            ProductoFisico key = productos.get(i);
+            int j = i - 1;
+            while (j >= 0 && productos.get(j).getId() > key.getId()) {
+                productos.set(j + 1, productos.get(j));
+                j = j - 1;
+            }
+            productos.set(j + 1, key);
+        }
+    }
+    public void sortByNombreInsertion(ArrayList<ProductoFisico> productos) {
+        for (int i = 1; i < productos.size(); i++) {
+            ProductoFisico key = productos.get(i);
+            int j = i - 1;
+            while (j >= 0 && productos.get(j).getNombre().compareTo(key.getNombre()) > 0) {
+                productos.set(j + 1, productos.get(j));
+                j = j - 1;
+            }
+            productos.set(j + 1, key);
+        }
+    }
+    public int searchById(ArrayList<ProductoFisico> productos, int id) {
+        int bajo = 0;
+        int alto = productos.size() - 1;
+        while (bajo <= alto) {
+            int medio = (bajo + alto) / 2;
+            if (productos.get(medio).getId() == id) {
+                return medio; 
+            } else if (productos.get(medio).getId() < id) {
+                bajo = medio + 1; 
+            } else {
+                alto = medio - 1; 
+            }
+        }return -1; 
+    }
+    public int searchByNombre(ArrayList<ProductoFisico> productos, String nombre) {
+        int bajo = 0;
+        int alto = productos.size() - 1;
+        while (bajo <= alto) {
+            int medio = (bajo + alto) / 2;
+            if (productos.get(medio).getNombre().equalsIgnoreCase(nombre)) {
+                return medio; 
+            } else if (productos.get(medio).getNombre().compareToIgnoreCase(nombre) < 0) {
+                bajo = medio + 1; 
+            } else {
+                alto = medio - 1; 
+            }
+    }
+    return -1;}
     
     @Override
 public String toString() {

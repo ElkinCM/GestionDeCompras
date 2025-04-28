@@ -44,59 +44,59 @@ public class Proveedor extends Persona {
         this.productos = productos;
     }
 
-    public void sortByNameInsertion(Proveedor[] proveedores) {
-        for (int i = 1; i < proveedores.length; i++) {
-            Proveedor key = proveedores[i];
+    public  void sortByNameInsertion(ArrayList<Proveedor> proveedores) {
+        for (int i = 1; i < proveedores.size(); i++) {
+            Proveedor key = proveedores.get(i);
             int j = i - 1;
-            while (j >= 0 && proveedores[j].getNombre().compareTo(key.getNombre()) > 0) {
-                proveedores[j + 1] = proveedores[j];
+            while (j >= 0 && proveedores.get(j).getNombre().compareTo(key.getNombre()) > 0) {
+                proveedores.set(j + 1, proveedores.get(j));
                 j = j - 1;
             }
-            proveedores[j + 1] = key;
+            proveedores.set(j + 1, key);
         }
     }
-    public void sortByCedulaInsertion(Proveedor[] proveedores) {
-        for (int i = 1; i < proveedores.length; i++) {
-            Proveedor key = proveedores[i];
+    public void sortByCedulaInsertion(ArrayList<Proveedor> proveedores) {
+        for (int i = 1; i < proveedores.size(); i++) {
+            Proveedor key = proveedores.get(i);
             int j = i - 1;
-            while (j >= 0 && proveedores[j].getCedula().compareTo(key.getCedula()) > 0) {
-                proveedores[j + 1] = proveedores[j];
+            while (j >= 0 && proveedores.get(j).getCedula().compareTo(key.getCedula()) > 0) {
+                proveedores.set(j + 1, proveedores.get(j));
                 j = j - 1;
             }
-            proveedores[j + 1] = key;
+            proveedores.set(j + 1, key);
         }
     }
 
 
-    public int searchByName(Proveedor[] proveedores, String nombre){
+    public int searchByName(ArrayList<Proveedor> proveedores, String nombre){
         int bajo = 0;
-        int alto = proveedores.length - 1;
+        int alto = proveedores.size() - 1;
         while (bajo <= alto) {
             int medio = (bajo + alto) / 2;
-            if (proveedores[medio].getNombre().equalsIgnoreCase(nombre)) {
-                return medio;
-            } else if (proveedores[medio].getNombre().compareToIgnoreCase(nombre) < 0) {
-                bajo = medio + 1;
+            if (proveedores.get(medio).getNombre().equalsIgnoreCase(nombre)) {
+                return medio; // Se encontró el nombre
+            } else if (proveedores.get(medio).getNombre().compareToIgnoreCase(nombre) < 0) {
+                bajo = medio + 1; // Buscar en la mitad superior
             } else {
-                alto = medio - 1; 
+                alto = medio - 1; // Buscar en la mitad inferior
             }
         }
-        return -1;
+        return -1; 
     }
 
-    public int searchByCedula(Proveedor[] proveedores, String cedula){
+    public int searchByCedula(ArrayList<Proveedor> proveedores, String cedula){
         int bajo = 0;
-        int alto = proveedores.length - 1;
+        int alto = proveedores.size() - 1;
         while (bajo <= alto) {
             int medio = (bajo + alto) / 2;
-            if (proveedores[medio].getCedula().equalsIgnoreCase(cedula)) {
+            if (proveedores.get(medio).getCedula().equalsIgnoreCase(cedula)) {
                 return medio;
-            } else if (proveedores[medio].getCedula().compareToIgnoreCase(cedula) < 0) {
+            } else if (proveedores.get(medio).getCedula().compareToIgnoreCase(cedula) < 0) {
                 bajo = medio + 1;
             } else {
                 alto = medio - 1;
             }
-        }
+        };
         return -1;
     }
 

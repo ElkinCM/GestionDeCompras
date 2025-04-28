@@ -1,7 +1,6 @@
 package ec.edu.ups.poo.models.producto;
 
 import ec.edu.ups.poo.models.interfaces.Calculable;
-
 import java.util.Objects;
 
 public abstract class Producto implements Calculable {

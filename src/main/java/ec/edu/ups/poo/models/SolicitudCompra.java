@@ -14,6 +14,14 @@ public class SolicitudCompra {
     private List<DetalleCompra> detalles;
     private List<ProductoFisico> productos = new ArrayList<>();
 
+
+    public SolicitudCompra() {
+        this.id = contador++;
+        this.solicitante = null;
+        this.departamento = null;
+        this.estado = EstadoSolicitud.SOLICITADA;
+        this.detalles = new ArrayList<>();
+    }
     public SolicitudCompra(String solicitante, Departamento departamento) {
         this.id = contador++;
         this.solicitante = solicitante;
@@ -58,6 +66,34 @@ public class SolicitudCompra {
     // Método para calcular el total de la solicitud
     public double calcularTotal() {
         return detalles.stream().mapToDouble(DetalleCompra::calcularTotal).sum();
+    }
+
+
+    //Ordenamiento
+    public void sortByIdInsertion(ArrayList<SolicitudCompra> solicitudes) {
+        for (int i = 1; i < solicitudes.size(); i++) {
+            SolicitudCompra key = solicitudes.get(i);
+            int j = i - 1;
+            while (j >= 0 && solicitudes.get(j).getId() > key.getId()) {
+                solicitudes.set(j + 1, solicitudes.get(j));
+                j = j - 1;
+            }
+            solicitudes.set(j + 1, key);
+        }
+    }
+    public int searchById(ArrayList<SolicitudCompra> solicitudes, int id) {
+        int bajo = 0;
+        int alto = solicitudes.size() - 1;
+        while (bajo <= alto) {
+            int medio = (bajo + alto) / 2;
+            if (solicitudes.get(medio).getId() == id) {
+                return medio; 
+            } else if (solicitudes.get(medio).getId() < id) {
+                bajo = medio + 1; 
+            } else {
+                alto = medio - 1; 
+            }
+        }return -1; 
     }
 
     @Override
