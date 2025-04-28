@@ -97,16 +97,16 @@ public class App {
                             int id = leer.nextInt();
                             leer.nextLine();
                             System.out.print("Ingrese el nombre del producto: ");
-                            String nombreProducto = leer.nextLine();
+                            String nombreProducto = leer.next();
                             System.out.print("Ingrese precio unitario: ");
                             double precio = leer.nextDouble();
                             System.out.print("Ingrese cantidad: ");
                             int cantidad = leer.nextInt();
                             leer.nextLine();
                             System.out.print("Ingrese descripción: ");
-                            String descripcion = leer.nextLine();
+                            String descripcion = leer.next();
                             System.out.print("Ingrese presentación: ");
-                            String presentacion = leer.nextLine();
+                            String presentacion = leer.next();
 
                             // Mostrar lista de proveedores
                             System.out.println("Seleccione un proveedor:");
@@ -124,16 +124,16 @@ public class App {
                         } else if (tipoProducto == 2) {
                             System.out.print("Ingrese el ID del servicio: ");
                             int idServicio = leer.nextInt();
-                            leer.nextLine(); 
+                            leer.next();
                             System.out.print("Ingrese el nombre del servicio: ");
-                            String nombreServicio = leer.nextLine();
+                            String nombreServicio = leer.next();
                             System.out.print("Ingrese precio unitario: ");
                             int precioServicio = leer.nextInt();
                             System.out.print("Ingrese cantidad: ");
                             int cantidadServicio = leer.nextInt();
-                            leer.nextLine(); 
+                            leer.next();
                             System.out.print("Ingrese tipo del servicio: ");
-                            String tipoServicio = leer.nextLine();
+                            String tipoServicio = leer.next();
                             System.out.print("Ingrese categoría del servicio: ");
                             String categoriaServicio = leer.nextLine();
 
@@ -170,8 +170,8 @@ public class App {
                     
                         System.out.print("Ingrese el nombre del solicitante: ");
                         leer.nextLine(); // limpiar buffer antes de nextLine
-                        String solicitante = leer.nextLine();
-                    
+                        String solicitante = leer.next();
+
                         System.out.println("Seleccione el departamento:");
                         for (int i = 0; i < departamentos.size(); i++) {
                             System.out.println((i + 1) + ". " + departamentos.get(i).getNombreDp());
@@ -242,7 +242,7 @@ public class App {
                             }
                     
                             System.out.print("¿Desea agregar otro producto o servicio? (s/n): ");
-                            String continuar = leer.nextLine();
+                            String continuar = leer.next();
                             agregarProductos = continuar.equalsIgnoreCase("s");
                         }
                     
