@@ -63,10 +63,15 @@ public class SolicitudCompra {
         return this.estado;
     }
 
-    // Método para calcular el total de la solicitud
+
     public double calcularTotal() {
         return detalles.stream().mapToDouble(DetalleCompra::calcularTotal).sum();
     }
+
+    public void agregarProducto(ProductoFisico producto) {
+        productos.add(producto);
+    }
+    
 
 
     //Ordenamiento
@@ -103,17 +108,6 @@ public class SolicitudCompra {
             "Solicitante  : " + solicitante + "\n" +
             "Departamento : " + departamento.getNombreDp() + "\n" +
             "Estado       : " + estado + "\n" + 
-            "Productos:\n" + listarProductosSolicitados() +
             "=================================\n";
-    }
-
-    private String listarProductosSolicitados() {
-        StringBuilder sb = new StringBuilder();
-        for (ProductoFisico producto : productos) {
-            sb.append(" - ").append(producto.getNombre())
-            .append(" | Cantidad: ").append(producto.getCantidad())
-            .append("\n");
-        }
-        return sb.toString();
     }
 }
