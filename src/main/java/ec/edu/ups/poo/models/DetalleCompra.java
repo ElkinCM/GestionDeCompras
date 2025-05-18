@@ -1,6 +1,7 @@
 package ec.edu.ups.poo.models;
 
 import ec.edu.ups.poo.models.producto.Producto;
+import ec.edu.ups.poo.models.producto.ProductoFisico;
 
 public class DetalleCompra {
     private Producto producto;
@@ -15,16 +16,8 @@ public class DetalleCompra {
         return producto;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
     public int getCantidad() {
         return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
     }
 
     public double calcularSubtotal() {
@@ -38,4 +31,22 @@ public class DetalleCompra {
     public double calcularTotal() {
         return calcularSubtotal() + calcularIVA();
     }
+
+    @Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Cantidad: ").append(cantidad).append("\n");
+    sb.append("Producto: ").append(producto.getNombre()).append("\n");
+    sb.append("Precio Unitario: $").append(producto.getPrecioUnitario()).append("\n");
+    sb.append("Subtotal: $").append(calcularTotal()).append("\n");
+
+    if (producto instanceof ProductoFisico) {
+        sb.append("Tipo: Producto Físico\n");
+    } else {
+        sb.append("Tipo: Servicio\n");
+    }
+
+    return sb.toString();
+}
+
 }

@@ -1,129 +1,123 @@
 package ec.edu.ups.poo.models;
 
+import ec.edu.ups.poo.models.producto.Producto;
+import ec.edu.ups.poo.models.producto.ProductoFisico;
+import ec.edu.ups.poo.models.producto.Servicio;
+
 import java.util.ArrayList;
 import java.util.List;
-import ec.edu.ups.poo.models.producto.Producto;
 
 public class Proveedor extends Persona {
-    private String ruc;
     private String empresa;
-    private List<Producto> productos;
-    public Proveedor() {
-    }
+    private List<Producto> productos = new ArrayList<>();
 
-    public Proveedor(String cedula, String nombre, String ruc, String empresa) {
+    public Proveedor(String cedula, String nombre, String empresa) {
         super(cedula, nombre);
-        this.ruc = ruc;
         this.empresa = empresa;
-        this.productos = new ArrayList<>();
     }
 
-    public String getRuc() {
-        return ruc;
-    }
-
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+    public Proveedor() {
+        super("", "");
     }
 
     public String getEmpresa() {
         return empresa;
     }
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
-    }
-
-    public String obtenerEmpresa() {
-        return empresa;
-    }
     public List<Producto> getProductos() {
         return productos;
-    }
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
-    }
-
-    public  void sortByNameInsertion(ArrayList<Proveedor> proveedores) {
-        for (int i = 1; i < proveedores.size(); i++) {
-            Proveedor key = proveedores.get(i);
-            int j = i - 1;
-            while (j >= 0 && proveedores.get(j).getNombre().compareTo(key.getNombre()) > 0) {
-                proveedores.set(j + 1, proveedores.get(j));
-                j = j - 1;
-            }
-            proveedores.set(j + 1, key);
-        }
-    }
-    public void sortByCedulaInsertion(ArrayList<Proveedor> proveedores) {
-        for (int i = 1; i < proveedores.size(); i++) {
-            Proveedor key = proveedores.get(i);
-            int j = i - 1;
-            while (j >= 0 && proveedores.get(j).getCedula().compareTo(key.getCedula()) > 0) {
-                proveedores.set(j + 1, proveedores.get(j));
-                j = j - 1;
-            }
-            proveedores.set(j + 1, key);
-        }
-    }
-
-
-    public int searchByName(ArrayList<Proveedor> proveedores, String nombre){
-        int bajo = 0;
-        int alto = proveedores.size() - 1;
-        while (bajo <= alto) {
-            int medio = (bajo + alto) / 2;
-            if (proveedores.get(medio).getNombre().equalsIgnoreCase(nombre)) {
-                return medio; // Se encontró el nombre
-            } else if (proveedores.get(medio).getNombre().compareToIgnoreCase(nombre) < 0) {
-                bajo = medio + 1; // Buscar en la mitad superior
-            } else {
-                alto = medio - 1; // Buscar en la mitad inferior
-            }
-        }
-        return -1; 
-    }
-
-    public int searchByCedula(ArrayList<Proveedor> proveedores, String cedula){
-        int bajo = 0;
-        int alto = proveedores.size() - 1;
-        while (bajo <= alto) {
-            int medio = (bajo + alto) / 2;
-            if (proveedores.get(medio).getCedula().equalsIgnoreCase(cedula)) {
-                return medio;
-            } else if (proveedores.get(medio).getCedula().compareToIgnoreCase(cedula) < 0) {
-                bajo = medio + 1;
-            } else {
-                alto = medio - 1;
-            }
-        };
-        return -1;
     }
 
     public void agregarProducto(Producto producto) {
         if (producto != null) {
             productos.add(producto);
-        } else {
-            System.out.println("El producto no puede ser nulo.");
+        }
+    }
+    public void ordenarPorCedula(List<Proveedor> proveedores) {
+        for (int i = 1; i < proveedores.size(); i++) {
+            Proveedor key = proveedores.get(i);
+            int j = i - 1;
+            while (j >= 0 && proveedores.get(j).getCedula().compareTo(key.getCedula()) > 0) {
+                proveedores.set(j + 1, proveedores.get(j));
+                j--;
+            }
+            proveedores.set(j + 1, key);
+        }
+    }
+
+    public int buscarPorCedula(List<Proveedor> proveedores, String cedula) {
+        int bajo = 0, alto = proveedores.size() - 1;
+        while (bajo <= alto) {
+            int medio = (bajo + alto) / 2;
+            int comparacion = proveedores.get(medio).getCedula().compareTo(cedula);
+            if (comparacion == 0) return medio;
+            if (comparacion < 0) bajo = medio + 1;
+            else alto = medio - 1;
+        }
+        return -1;
+    }
+
+    public static void listarProveedoresConProductos(
+            List<Proveedor> proveedores,
+            List<ProductoFisico> productosFisicos,
+            List<Servicio> servicios
+    ) {
+        if (proveedores.isEmpty()) {
+            System.out.println("No hay proveedores registrados.");
+            return;
+        }
+
+        for (Proveedor p : proveedores) {
+            System.out.println(p);
+
+            boolean tieneAsociados = false;
+
+            if (p.getProductos() != null && !p.getProductos().isEmpty()) {
+                System.out.println("Productos registrados:");
+                for (Producto producto : p.getProductos()) {
+                    System.out.println(" - " + producto.getNombre());
+                }
+                tieneAsociados = true;
+            }
+
+            for (ProductoFisico pf : productosFisicos) {
+                if (pf.getProveedor().equals(p)) {
+                    if (!tieneAsociados) {
+                        System.out.println("Productos y Servicios asociados:");
+                    }
+                    System.out.println("- Producto Físico: " + pf.getNombre());
+                    tieneAsociados = true;
+                }
+            }
+
+            for (Servicio serv : servicios) {
+                if (serv.getProveedores().contains(p)) {
+                    if (!tieneAsociados) {
+                        System.out.println("Productos y Servicios asociados:");
+                    }
+                    System.out.println("- Servicio: " + serv.getNombre());
+                    tieneAsociados = true;
+                }
+            }
+
+            if (!tieneAsociados) {
+                System.out.println("No tiene productos ni servicios asociados.");
+            }
+
+            System.out.println("----------------------------------");
         }
     }
 
     public void eliminarProducto(Producto producto) {
-        if (productos.contains(producto)) {
-            productos.remove(producto);
-        } else {
-            System.out.println("El producto no se encuentra en la lista de productos del proveedor.");
-        }
+        productos.remove(producto);
     }
-
+    
     @Override
     public String toString() {
         return "\n========= PROVEEDOR =========\n" +
             "Cédula      : " + getCedula() + "\n" +
             "Nombre      : " + getNombre() + "\n" +
-            "RUC         : " + ruc + "\n" +
             "Empresa     : " + empresa + "\n" +
             "==============================\n";
     }
-    
 }
