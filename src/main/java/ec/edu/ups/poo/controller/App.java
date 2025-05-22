@@ -228,7 +228,6 @@ public class App {
                                 System.out.print("¿Desea agregar otro producto o servicio? (s/n): ");
                                 agregar = leer.next().equalsIgnoreCase("s");
                             }
-
                             solicitudes.add(solicitud);
                             System.out.println("Solicitud registrada exitosamente con ID: " + solicitud.getId());
                             break;
