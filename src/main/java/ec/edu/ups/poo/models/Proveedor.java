@@ -20,10 +20,6 @@ public class Proveedor extends Persona {
         super("", "");
     }
 
-    public String getEmpresa() {
-        return empresa;
-    }
-
     public List<Producto> getProductos() {
         return productos;
     }
@@ -33,6 +29,7 @@ public class Proveedor extends Persona {
             productos.add(producto);
         }
     }
+
     public void ordenarPorCedula(List<Proveedor> proveedores) {
         for (int i = 1; i < proveedores.size(); i++) {
             Proveedor key = proveedores.get(i);
@@ -55,6 +52,30 @@ public class Proveedor extends Persona {
             else alto = medio - 1;
         }
         return -1;
+    }
+
+    public int buscarPorNombre(List<Proveedor> proveedores, String nombre) {
+        int bajo = 0, alto = proveedores.size() - 1;
+        while (bajo <= alto) {
+            int medio = (bajo + alto) / 2;
+            int comparacion = proveedores.get(medio).getNombre().compareToIgnoreCase(nombre); // Ignorar mayúsculas/minúsculas
+            if (comparacion == 0) return medio;
+            if (comparacion < 0) bajo = medio + 1;
+            else alto = medio - 1;
+        }
+        return -1;
+    }
+
+    public void ordenarPorNombre(List<Proveedor> proveedores) {
+        for (int i = 1; i < proveedores.size(); i++) {
+            Proveedor key = proveedores.get(i);
+            int j = i - 1;
+            while (j >= 0 && proveedores.get(j).getNombre().compareToIgnoreCase(key.getNombre()) > 0) {
+                proveedores.set(j + 1, proveedores.get(j));
+                j--;
+            }
+            proveedores.set(j + 1, key);
+        }
     }
 
     public static void listarProveedoresConProductos(
@@ -108,16 +129,13 @@ public class Proveedor extends Persona {
         }
     }
 
-    public void eliminarProducto(Producto producto) {
-        productos.remove(producto);
-    }
-    
+
     @Override
     public String toString() {
         return "\n========= PROVEEDOR =========\n" +
-            "Cédula      : " + getCedula() + "\n" +
-            "Nombre      : " + getNombre() + "\n" +
-            "Empresa     : " + empresa + "\n" +
-            "==============================\n";
+                "Cédula      : " + getCedula() + "\n" +
+                "Nombre      : " + getNombre() + "\n" +
+                "Empresa     : " + empresa + "\n" +
+                "==============================\n";
     }
 }

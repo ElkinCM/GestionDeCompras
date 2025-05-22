@@ -232,8 +232,6 @@ public class App {
                             solicitudes.add(solicitud);
                             System.out.println("Solicitud registrada exitosamente con ID: " + solicitud.getId());
                             break;
-
-
                         case 4:
                             System.out.println("** LISTAR PROVEEDORES **");
                             Proveedor.listarProveedoresConProductos(proveedores, productos, servicios);
@@ -255,7 +253,6 @@ public class App {
                             }
                         }
                         break;
-
                         case 6:
                             System.out.println("** LISTA DE SOLICITUDES DE COMPRA **");
                             if (solicitudes.isEmpty()) {
@@ -273,20 +270,22 @@ public class App {
                                             System.out.println(detalle); // usa tu toString()
                                         }
                                     }
-
                                     System.out.println("=====================================");
                                 }
                             }
                         break;
 
-                        case 7:
+                    case 7:
                         System.out.println("** BUSCAR PROVEEDOR **");
                         System.out.println("Quieres Buscar por:");
                         System.out.println("1. Cédula");
                         System.out.println("2. Nombre");
                         System.out.print("Seleccione una opción: ");
                         int opcionBuscar = leer.nextInt();
+                        leer.nextLine();
+
                         if (opcionBuscar == 1) {
+
                             System.out.print("Ingrese la cédula del proveedor: ");
                             String cedulaBuscar = leer.next();
                             proveedorG.ordenarPorCedula(proveedores);
@@ -296,8 +295,19 @@ public class App {
                             } else {
                                 System.out.println("Proveedor no encontrado.");
                             }
+                        } else if (opcionBuscar == 2) {
+
+                            System.out.print("Ingrese el nombre del proveedor: ");
+                            String nombreBuscar = leer.nextLine();
+                            proveedorG.ordenarPorNombre(proveedores);
+                            int index = proveedorG.buscarPorNombre(proveedores, nombreBuscar);
+                            if (index != -1) {
+                                System.out.println("Proveedor encontrado: " + proveedores.get(index));
+                            } else {
+                                System.out.println("Proveedor no encontrado.");
+                            }
                         } else {
-                            System.out.println("Búsqueda por nombre no implementada aún.");
+                            System.out.println("Opción no válida.");
                         }
                         break;
 
